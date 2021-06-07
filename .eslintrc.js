@@ -30,5 +30,6 @@ module.exports = {
     "import/extensions": "off",
     "react/jsx-filename-extension": [1, { extensions: [".tsx", ".jsx"] }],
     "class-methods-use-this": "off",
+    "max-classes-per-file": "off"
   },
 };
