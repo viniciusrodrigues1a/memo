@@ -4,7 +4,10 @@ import {
   InMemoryShowBoardRepository,
   inMemoryHelperArray,
 } from "./InMemoryMock";
-import { BoardAlreadyExistsError } from "./errors";
+import {
+  BoardAlreadyExistsError,
+  BoardNameExceedsMaximumLength,
+} from "./errors";
 
 describe("Board creation use-case", () => {
   afterEach(() => {
@@ -38,5 +41,18 @@ describe("Board creation use-case", () => {
     expect(() => createBoardUseCase.create("My new board")).toThrow(
       new BoardAlreadyExistsError("My new board")
     );
+  });
+
+  it("should not be able to create a new Board if its name is longer than 32 characters", () => {
+    const inMemoryCreateBoardRepository = new InMemoryCreateBoardRepository();
+    const inMemoryShowBoardRepository = new InMemoryShowBoardRepository();
+    const createBoardUseCase = new CreateBoardUseCase(
+      inMemoryCreateBoardRepository,
+      inMemoryShowBoardRepository
+    );
+
+    expect(() =>
+      createBoardUseCase.create("My new board with a very long name")
+    ).toThrow(new BoardNameExceedsMaximumLength(32));
   });
 });
