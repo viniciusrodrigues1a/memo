@@ -3,7 +3,7 @@ import {
   InMemoryCreateBoardRepository,
   InMemoryShowBoardRepository,
   inMemoryHelperArray,
-} from "./InMemoryMock";
+} from "./InMemory";
 import {
   BoardAlreadyExistsError,
   BoardNameExceedsMaximumLength,
