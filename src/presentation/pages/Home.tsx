@@ -98,8 +98,8 @@ const headerStyles = StyleSheet.create({
   header: {
     backgroundColor: "#6A00FF",
     width: "100%",
-    height: 100,
-    padding: 16,
+    paddingHorizontal: 16,
+    paddingVertical: 24,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
