@@ -38,7 +38,16 @@ describe("Board creation use-case", () => {
     const { sut, inMemoryShowBoardRepository } = makeSut();
 
     inMemoryShowBoardRepository.show = jest.fn(() => ({
+      id: "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
       name: "My new board",
+      statuses: [
+        {
+          name: "todo",
+          boardId: "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
+          colorHex: "#FF3300",
+          stories: [],
+        },
+      ],
     }));
 
     expect(() => sut.create("My new board")).toThrow(

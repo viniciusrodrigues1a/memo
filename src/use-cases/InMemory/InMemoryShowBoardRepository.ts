@@ -1,4 +1,4 @@
-import { Board } from "../../entities/Board";
+import { Board } from "../../entities";
 import { IShowBoardRepository } from "../interfaces/IShowBoardRepository";
 import { inMemoryHelperArray } from "./inMemoryHelperArray";
 

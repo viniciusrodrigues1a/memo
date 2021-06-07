@@ -1,3 +1,5 @@
+import { Board } from "../../entities";
+
 export interface ICreateBoardRepository {
-  create(name: string): void;
+  create(name: string): Promise<Board>;
 }
