@@ -32,6 +32,7 @@ module.exports = {
     "class-methods-use-this": "off",
     "max-classes-per-file": "off",
     "import/prefer-default-export": "off",
-    "@typescript-eslint/no-use-before-define": "off"
+    "@typescript-eslint/no-use-before-define": "off",
+    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
   },
 };
