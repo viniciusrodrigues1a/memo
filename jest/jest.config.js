@@ -1,6 +1,6 @@
 module.exports = {
   preset: "ts-jest",
-  rootDir: "../src",
-  testEnvironment: "jsdom",
+  rootDir: "../",
+  testEnvironment: "node",
+  setupFiles: ["./jest/setupFiles/mockAsyncStorage.ts"],
 };
-
