@@ -1,6 +1,7 @@
-import { Story } from "./Story";
+import { Status } from "./Status";
 
 export type Board = {
+  id: string;
   name: string;
-  stories?: Story[];
+  statuses: Status[];
 };
