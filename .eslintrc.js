@@ -31,6 +31,7 @@ module.exports = {
     "react/jsx-filename-extension": [1, { extensions: [".tsx", ".jsx"] }],
     "class-methods-use-this": "off",
     "max-classes-per-file": "off",
-    "import/prefer-default-export": "off"
+    "import/prefer-default-export": "off",
+    "@typescript-eslint/no-use-before-define": "off"
   },
 };
