@@ -1,49 +1,10 @@
-import { Board } from "../entities/Board";
-
-interface ICreateBoardRepository {
-  create(name: string): void;
-}
-
-interface IShowBoardRepository {
-  show(name: string): Board | undefined;
-}
-
-const inMemoryHelperArray: Board[] = [];
-
-class InMemoryCreateBoardRepository implements ICreateBoardRepository {
-  create(name: string): void {
-    inMemoryHelperArray.push({ name, stories: [] });
-  }
-}
-
-class InMemoryShowBoardRepository implements IShowBoardRepository {
-  show(name: string): Board | undefined {
-    return inMemoryHelperArray.find((b) => b.name === name);
-  }
-}
-
-class BoardAlreadyExistsError extends Error {
-  constructor(boardName: string) {
-    super(boardName);
-    this.message = `Board ${boardName} already exists`;
-  }
-}
-
-class CreateBoardUseCase {
-  constructor(
-    private createBoardRepository: ICreateBoardRepository,
-    private showBoardRepository: IShowBoardRepository
-  ) {}
-
-  create(name: string) {
-    const boardAlreadyExists = this.showBoardRepository.show(name);
-    if (boardAlreadyExists) {
-      throw new BoardAlreadyExistsError(name);
-    }
-
-    this.createBoardRepository.create(name);
-  }
-}
+import { CreateBoardUseCase } from "./CreateBoardUseCase";
+import {
+  InMemoryCreateBoardRepository,
+  InMemoryShowBoardRepository,
+  inMemoryHelperArray,
+} from "./InMemoryMock";
+import { BoardAlreadyExistsError } from "./errors";
 
 describe("Board creation use-case", () => {
   afterEach(() => {
