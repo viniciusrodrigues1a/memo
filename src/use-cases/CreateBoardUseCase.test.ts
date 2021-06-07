@@ -24,7 +24,7 @@ describe("Board creation use-case", () => {
 
     createBoardUseCase.create("My new board");
 
-    const board = inMemoryShowBoardRepository.show("My new board");
+    const board = inMemoryHelperArray.find((b) => b.name === "My new board");
     expect(board?.name).toEqual("My new board");
   });
 
