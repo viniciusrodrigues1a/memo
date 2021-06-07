@@ -36,7 +36,9 @@ describe("Board creation use-case", () => {
       inMemoryShowBoardRepository
     );
 
-    createBoardUseCase.create("My new board");
+    inMemoryShowBoardRepository.show = jest.fn(() => ({
+      name: "My new board",
+    }));
 
     expect(() => createBoardUseCase.create("My new board")).toThrow(
       new BoardAlreadyExistsError("My new board")
@@ -50,6 +52,8 @@ describe("Board creation use-case", () => {
       inMemoryCreateBoardRepository,
       inMemoryShowBoardRepository
     );
+
+    inMemoryShowBoardRepository.show = jest.fn(() => undefined);
 
     expect(() =>
       createBoardUseCase.create("My new board with a very long name")
