@@ -96,7 +96,7 @@ export default function Home() {
 const headerStyles = StyleSheet.create({
   container: { flex: 1 },
   header: {
-    backgroundColor: "#6A00FF",
+    backgroundColor: "#067C69",
     width: "100%",
     paddingHorizontal: 16,
     paddingVertical: 24,

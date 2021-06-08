@@ -15,6 +15,6 @@ export default function StatusBar() {
 const styles = StyleSheet.create({
   statusBarContainer: {
     height: Constants.statusBarHeight,
-    backgroundColor: "#6a00ff",
+    backgroundColor: "#067C69",
   },
 });
