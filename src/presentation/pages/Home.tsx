@@ -64,8 +64,8 @@ export default function Home() {
             <Text style={boardStyle.title}>{item.name}</Text>
 
             <View style={boardStyle.statusesView}>
-              {item.statuses.map((status) => (
-                <View style={boardStyle.statusView}>
+              {item.statuses.map((status, index) => (
+                <View style={boardStyle.statusView} key={index.toString()}>
                   <View
                     style={[
                       boardStyle.statusCircle,
