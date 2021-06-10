@@ -1,14 +1,12 @@
 import { Board } from "../entities";
-import { IListBoardRepository } from "./interfaces";
+import { IShowBoardRepository } from "./interfaces";
 import { BoardNotFoundError } from "./errors";
 
 export class ShowBoardUseCase {
-  constructor(private listBoardRepository: IListBoardRepository) {}
+  constructor(private showBoardRepository: IShowBoardRepository) {}
 
   async show(name: string): Promise<Board> {
-    const boards = await this.listBoardRepository.list();
-
-    const board = boards.find((b) => b.name === name);
+    const board = await this.showBoardRepository.show(name);
 
     if (!board) {
       throw new BoardNotFoundError(name);

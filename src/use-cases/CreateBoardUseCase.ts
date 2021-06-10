@@ -10,8 +10,8 @@ export class CreateBoardUseCase {
     private showBoardRepository: IShowBoardRepository
   ) {}
 
-  create(name: string) {
-    const boardAlreadyExists = this.showBoardRepository.show(name);
+  async create(name: string) {
+    const boardAlreadyExists = await this.showBoardRepository.show(name);
     if (boardAlreadyExists) {
       throw new BoardAlreadyExistsError(name);
     }
