@@ -1,20 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Board } from "../../entities";
-import { IListBoardRepository } from "../../use-cases/interfaces";
-
-class AsyncStorageListBoardRepository implements IListBoardRepository {
-  async list(): Promise<Board[]> {
-    const storedBoards = await AsyncStorage.getItem("@Memo:boards");
-
-    if (!storedBoards) {
-      return [];
-    }
-
-    const boards = JSON.parse(storedBoards);
-
-    return boards;
-  }
-}
+import { AsyncStorageListBoardRepository } from "./AsyncStorageListBoardRepository";
 
 describe("List all Boards using AsyncStorage", () => {
   afterEach(async () => {
