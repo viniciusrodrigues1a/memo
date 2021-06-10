@@ -59,6 +59,6 @@ describe("List all boards use-case", () => {
 
     const { sut } = makeSut();
 
-    expect(sut.list()).rejects.toThrow(new NoBoardFoundError());
+    await expect(sut.list()).rejects.toThrow(new NoBoardFoundError());
   });
 });
