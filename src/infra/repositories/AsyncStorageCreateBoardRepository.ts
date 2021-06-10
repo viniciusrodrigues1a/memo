@@ -33,7 +33,7 @@ export class AsyncStorageCreateBoardRepository
       ],
     };
 
-    await AsyncStorage.setItem(boardId, JSON.stringify(board));
+    await AsyncStorage.setItem("@Memo:boards", JSON.stringify([board]));
 
     return board;
   }
