@@ -20,7 +20,7 @@ module.exports = {
     },
     ecmaVersion: 12,
     sourceType: "module",
-    project: "./tsconfig.json"
+    project: "./tsconfig.json",
   },
   plugins: ["react", "@typescript-eslint", "prettier", "import"],
   rules: {
@@ -34,5 +34,7 @@ module.exports = {
     "import/prefer-default-export": "off",
     "@typescript-eslint/no-use-before-define": "off",
     "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
+    "no-nested-ternary": "off",
+    "@typescript-eslint/no-shadow": "off",
   },
 };
