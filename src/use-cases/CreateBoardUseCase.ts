@@ -21,6 +21,6 @@ export class CreateBoardUseCase {
       throw new BoardNameExceedsMaximumLength(maximumLength);
     }
 
-    this.createBoardRepository.create(name);
+    await this.createBoardRepository.create(name);
   }
 }
