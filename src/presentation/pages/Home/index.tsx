@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { useNavigation } from "@react-navigation/native";
 import {
   View,
   TouchableOpacity,
@@ -46,6 +47,7 @@ export default function Home() {
   });
   const [boardName, setBoardName] = useState("");
 
+  const navigation = useNavigation();
   const keyboard = useKeyboard();
 
   function openModal() {
@@ -135,7 +137,8 @@ export default function Home() {
           keyExtractor={(item) => item.id}
           data={boardsResponse.boards}
           renderItem={({ item, index }) => (
-            <View
+            <TouchableOpacity
+              onPress={() => navigation.navigate("Board", item)}
               style={[
                 boardStyle.container,
                 {
@@ -170,7 +173,7 @@ export default function Home() {
                   </View>
                 ))}
               </View>
-            </View>
+            </TouchableOpacity>
           )}
         />
       )}
