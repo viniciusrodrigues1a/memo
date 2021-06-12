@@ -31,16 +31,18 @@ describe("Show a Board use-case", () => {
   it("should return a board", async () => {
     const { sut } = makeSut();
 
-    const board = await sut.show("My board");
+    const board = await sut.show("fce54dcf-795f-4253-b719-bfb131ee71d8");
 
-    expect(board.id).toEqual("fce54dcf-795f-4253-b719-bfb131ee71d8");
+    expect(board.name).toEqual("My board");
   });
 
   it("should throw error BoardNotFoundError", async () => {
     const { sut } = makeSut();
 
-    await expect(sut.show("Non existent board")).rejects.toThrow(
-      new BoardNotFoundError("Non existent board")
+    await expect(
+      sut.show("1f79fbbe-ee10-443c-81aa-c8b023ba0080")
+    ).rejects.toThrow(
+      new BoardNotFoundError("1f79fbbe-ee10-443c-81aa-c8b023ba0080")
     );
   });
 });
