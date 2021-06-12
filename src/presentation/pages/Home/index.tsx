@@ -5,8 +5,8 @@ import {
   TouchableWithoutFeedback,
   Text,
   Image,
-  FlatList,
   TextInput,
+  FlatList,
   ActivityIndicator,
   StyleSheet,
   Dimensions,
@@ -14,19 +14,20 @@ import {
 import { useKeyboard } from "@react-native-community/hooks";
 import Constants from "expo-constants";
 
-import { showError } from "../utils/toasts";
+import { showError } from "../../utils/toasts";
 import {
   BoardAlreadyExistsError,
   NoBoardFoundError,
-} from "../../use-cases/errors";
-import { Board } from "../../entities";
-import { createBoardUseCase, listBoardUseCase } from "../factories";
+} from "../../../use-cases/errors";
+import { Board } from "../../../entities";
+import { createBoardUseCase, listBoardUseCase } from "../../factories";
 
-const DownTriangleImg = require("../assets/down-triangle.png");
-const PlusImg = require("../assets/plus.png");
-const FrownImg = require("../assets/frown.png");
-const LayoutImg = require("../assets/layout.png");
-const AtSignImg = require("../assets/at-sign.png");
+import EmptyBoards from "./EmptyBoards";
+import NoBoardFound from "./NoBoardFound";
+
+const DownTriangleImg = require("../../assets/down-triangle.png");
+const PlusImg = require("../../assets/plus.png");
+const AtSignImg = require("../../assets/at-sign.png");
 
 const contentHeight =
   Dimensions.get("window").height - Constants.statusBarHeight;
@@ -69,6 +70,8 @@ export default function Home() {
         setBoardsResponse({ error: true, boards: [] });
       }
     }
+
+    await new Promise((resolve) => setTimeout(resolve, 200));
 
     setLoading(false);
   }, []);
@@ -123,32 +126,9 @@ export default function Home() {
           <ActivityIndicator color="#222222" size="large" />
         </View>
       ) : boardsResponse.error ? (
-        <TouchableOpacity
-          style={error.container}
-          onPress={async () => fetchBoards()}
-        >
-          <Text style={error.title}>An error occurred</Text>
-
-          <Text style={error.description}>
-            We couldn&apos;t find your boards
-          </Text>
-
-          <Text style={error.fakeButtonText}>Try again</Text>
-        </TouchableOpacity>
+        <NoBoardFound onPress={async () => fetchBoards()} />
       ) : boardsResponse.boards.length === 0 ? (
-        <View style={empty.container}>
-          <Image source={LayoutImg} width={180} height={180} />
-
-          <View style={empty.textView}>
-            <Text style={empty.text}>No board was found</Text>
-
-            <Image source={FrownImg} width={40} height={40} />
-          </View>
-
-          <TouchableOpacity style={empty.button} onPress={openModal}>
-            <Text style={empty.buttonText}>Create your first board</Text>
-          </TouchableOpacity>
-        </View>
+        <EmptyBoards buttonOnPress={openModal} />
       ) : (
         <FlatList
           showsVerticalScrollIndicator={false}
@@ -335,65 +315,6 @@ const boardStyle = StyleSheet.create({
   statusTextSmaller: {
     fontSize: 18,
     color: "#777777",
-  },
-});
-
-const empty = StyleSheet.create({
-  container: {
-    marginTop: 100,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  textView: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 42,
-  },
-  text: {
-    fontSize: 22,
-    letterSpacing: 0.75,
-    textAlign: "center",
-    marginRight: 8,
-    color: "#222222",
-  },
-  button: {
-    backgroundColor: "#067C69",
-    paddingVertical: 16,
-    paddingHorizontal: 24,
-    marginTop: 24,
-    borderRadius: 6,
-  },
-  buttonText: {
-    fontSize: 22,
-    color: "#dddddd",
-    letterSpacing: 0.75,
-  },
-});
-
-const error = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-    flex: 1,
-  },
-  title: {
-    fontSize: 24,
-    color: "#7C1F06",
-    letterSpacing: 0.75,
-  },
-  description: {
-    fontSize: 18,
-    color: "#444444",
-    letterSpacing: 0.75,
-    marginTop: 12,
-  },
-  fakeButtonText: {
-    fontSize: 24,
-    color: "#222222",
-    letterSpacing: 0.75,
-    textTransform: "uppercase",
-    marginTop: 64,
   },
 });
 
