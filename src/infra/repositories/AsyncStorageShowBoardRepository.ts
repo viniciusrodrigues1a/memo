@@ -7,9 +7,9 @@ import {
 export class AsyncStorageShowBoardRepository implements IShowBoardRepository {
   constructor(private listBoardRepository: IListBoardRepository) {}
 
-  async show(name: string): Promise<Board | undefined> {
+  async show(id: string): Promise<Board | undefined> {
     const boards = await this.listBoardRepository.list();
-    const board = boards.find((b) => b.name === name);
+    const board = boards.find((b) => b.id === id);
 
     return board;
   }
