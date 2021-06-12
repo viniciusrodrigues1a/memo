@@ -11,7 +11,7 @@ const PlusImg = require("../assets/plus.png");
 
 type AddButtonProps = {
   onPress: () => void;
-  style: StyleProp<ViewStyle>;
+  style?: StyleProp<ViewStyle>;
 };
 
 export default function AddButton({ onPress, style = {} }: AddButtonProps) {
