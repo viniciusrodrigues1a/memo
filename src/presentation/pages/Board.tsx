@@ -68,7 +68,7 @@ export default function Board() {
               <TouchableOpacity
                 onPress={() =>
                   contentFlatListRef.current.scrollToOffset({
-                    offset: windowWidth * contentIndex,
+                    offset: windowWidth * index,
                   })
                 }
                 style={[
