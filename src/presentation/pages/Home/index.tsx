@@ -26,8 +26,9 @@ import { createBoardUseCase, listBoardUseCase } from "../../factories";
 import EmptyBoards from "./EmptyBoards";
 import NoBoardFound from "./NoBoardFound";
 
+import AddButton from "../../components/AddButton";
+
 const DownTriangleImg = require("../../assets/down-triangle.png");
-const PlusImg = require("../../assets/plus.png");
 const AtSignImg = require("../../assets/at-sign.png");
 
 const contentHeight =
@@ -179,12 +180,10 @@ export default function Home() {
       )}
 
       {!loading && !boardsResponse.error && (
-        <TouchableOpacity
+        <AddButton
           onPress={openModal}
-          style={[addBoardStyles.button, { elevation: isModalShown ? 0 : 12 }]}
-        >
-          <Image source={PlusImg} />
-        </TouchableOpacity>
+          style={{ elevation: isModalShown ? 0 : 12 }}
+        />
       )}
 
       {isModalShown && (
@@ -322,15 +321,6 @@ const boardStyle = StyleSheet.create({
 });
 
 const addBoardStyles = StyleSheet.create({
-  button: {
-    position: "absolute",
-    bottom: 16,
-    right: 16,
-    backgroundColor: "#067C69",
-    padding: 10,
-    borderRadius: 9999,
-    elevation: 12,
-  },
   modalContainer: {
     backgroundColor: "rgba(0, 0, 0, 0.4)",
     position: "absolute",
