@@ -1,5 +1,5 @@
 import React, { useRef, useCallback, useState, useMemo } from "react";
-import { useRoute, RouteProp } from "@react-navigation/native";
+import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
 import {
   View,
   Text,
@@ -12,6 +12,8 @@ import { Feather } from "@expo/vector-icons";
 
 import { StackParamList } from "../routes/StackNavigation";
 
+import AddButton from "../components/AddButton";
+
 const windowWidth = Dimensions.get("window").width;
 const tabBarButtonWidth = Math.floor(windowWidth / 3);
 
@@ -19,6 +21,7 @@ export default function Board() {
   const [contentIndex, setContentIndex] = useState(0);
 
   const route = useRoute<RouteProp<StackParamList, "Board">>();
+  const navigation = useNavigation();
 
   const contentFlatListRef = useRef(null);
   const tabBarFlatListRef = useRef(null);
@@ -132,6 +135,8 @@ export default function Board() {
           </View>
         )}
       />
+
+      <AddButton onPress={() => navigation.navigate("CreateStory")} />
     </View>
   );
 }
