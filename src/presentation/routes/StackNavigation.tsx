@@ -1,12 +1,14 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
+import { Board as BoardType } from "../../entities";
+
 import Home from "../pages/Home";
 import Board from "../pages/Board";
 
-type StackParamList = {
+export type StackParamList = {
   Home: undefined;
-  Board: undefined;
+  Board: BoardType;
 };
 
 const Stack = createStackNavigator<StackParamList>();

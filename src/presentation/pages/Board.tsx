@@ -1,4 +1,5 @@
-import React, { useRef, useCallback, useState } from "react";
+import React, { useRef, useCallback, useState, useMemo } from "react";
+import { useRoute, RouteProp } from "@react-navigation/native";
 import {
   View,
   Text,
@@ -7,8 +8,9 @@ import {
   StyleSheet,
   Dimensions,
 } from "react-native";
-
 import { Feather } from "@expo/vector-icons";
+
+import { StackParamList } from "../routes/StackNavigation";
 
 const windowWidth = Dimensions.get("window").width;
 const tabBarButtonWidth = Math.floor(windowWidth / 3);
@@ -16,8 +18,18 @@ const tabBarButtonWidth = Math.floor(windowWidth / 3);
 export default function Board() {
   const [contentIndex, setContentIndex] = useState(0);
 
+  const route = useRoute<RouteProp<StackParamList, "Board">>();
+
   const contentFlatListRef = useRef(null);
   const tabBarFlatListRef = useRef(null);
+
+  const statuses = useMemo(() => {
+    if (route.params) {
+      return route.params.statuses;
+    }
+
+    return [];
+  }, [route]);
 
   const onViewableItemsChanged = useCallback((items) => {
     if (items.viewableItems.length === 0) {
@@ -56,13 +68,7 @@ export default function Board() {
           showsHorizontalScrollIndicator={false}
           horizontal
           keyExtractor={(item) => item.name}
-          data={[
-            { name: "TODO" },
-            { name: "DOING" },
-            { name: "DONE" },
-            { name: "TESTING" },
-            { name: "READY" },
-          ]}
+          data={statuses}
           renderItem={({ item, index }) => (
             <>
               <TouchableOpacity
@@ -85,7 +91,7 @@ export default function Board() {
                     { color: index === contentIndex ? "#ffffff" : "#cccccc" },
                   ]}
                 >
-                  {item.name}
+                  {item.name.toUpperCase()}
                 </Text>
               </TouchableOpacity>
 
@@ -108,37 +114,18 @@ export default function Board() {
         viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
         horizontal
         keyExtractor={(_, index) => index.toString()}
-        data={[
-          [
-            { name: "Todo task", expirationDate: "Vence em 4 dias" },
-            { name: "Todo task", expirationDate: "Vence em 4 dias" },
-            { name: "Todo task", expirationDate: "Vence em 4 dias" },
-            { name: "Todo task", expirationDate: "Vence em 4 dias" },
-            { name: "Todo task", expirationDate: "Vence em 4 dias" },
-            { name: "Todo task", expirationDate: "Vence em 4 dias" },
-          ],
-          [
-            { name: "Todo task", expirationDate: "Vence em 4 dias" },
-            { name: "Todo task", expirationDate: "Vence em 4 dias" },
-            { name: "Todo task", expirationDate: "Vence em 4 dias" },
-          ],
-          [{ name: "Todo task", expirationDate: "Vence em 4 dias" }],
-          [{ name: "Todo task", expirationDate: "Vence em 4 dias" }],
-          [{ name: "Todo task", expirationDate: "Vence em 4 dias" }],
-        ]}
+        data={statuses}
         renderItem={({ item }) => (
           <View style={contentFlatList.content}>
             <FlatList
               showsVerticalScrollIndicator={false}
-              keyExtractor={(_, index) => index.toString()}
-              data={item}
+              keyExtractor={(_, index) => item.name}
+              data={item.stories}
               renderItem={({ item: story }) => (
                 <View style={contentFlatList.story}>
-                  <Text style={contentFlatList.storyTitle}>{story.name}</Text>
+                  <Text style={contentFlatList.storyTitle}>{story.title}</Text>
 
-                  <Text style={contentFlatList.storyDate}>
-                    {story.expirationDate}
-                  </Text>
+                  <Text style={contentFlatList.storyDate}>Vence em 4 dias</Text>
                 </View>
               )}
             />
