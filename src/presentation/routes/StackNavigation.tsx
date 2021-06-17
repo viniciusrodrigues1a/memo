@@ -1,7 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
-import { Board as BoardType } from "../../entities";
+import { Board as BoardType, Status } from "../../entities";
 
 import Home from "../pages/Home";
 import Board from "../pages/Board";
@@ -10,7 +10,7 @@ import CreateStory from "../pages/CreateStory";
 export type StackParamList = {
   Home: undefined;
   Board: BoardType;
-  CreateStory: undefined;
+  CreateStory: Status;
 };
 
 const Stack = createStackNavigator<StackParamList>();
