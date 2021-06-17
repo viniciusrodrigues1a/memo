@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import {
   View,
   Text,
@@ -8,10 +8,15 @@ import {
   StyleSheet,
 } from "react-native";
 
+import { StackParamList } from "../routes/StackNavigation";
+
+import { createStoryUseCase } from "../factories";
+
 export default function CreateStory() {
   const [description, setDescription] = useState("");
   const textInputRef = useRef<any>(null);
   const navigation = useNavigation();
+  const route = useRoute<RouteProp<StackParamList, "CreateStory">>();
 
   return (
     <View style={styles.container}>
@@ -22,6 +27,15 @@ export default function CreateStory() {
 
         <TouchableOpacity disabled={description === ""}>
           <Text
+            onPress={async () => {
+              await createStoryUseCase.create({
+                title: "My task title",
+                content: textInputRef.current.value,
+                status: route.params,
+              });
+
+              navigation.goBack();
+            }}
             style={[
               styles.okText,
               { color: description === "" ? "#bbbbbb" : "#067C69" },
