@@ -2,6 +2,7 @@ import {
   AsyncStorageCreateBoardRepository,
   AsyncStorageShowBoardRepository,
   AsyncStorageListBoardRepository,
+  AsyncStorageCreateStoryRepository,
 } from "../../../infra/repositories";
 
 export const asyncStorageListBoardRepository =
@@ -12,3 +13,6 @@ export const asyncStorageShowBoardRepository =
 
 export const asyncStorageCreateBoardRepository =
   new AsyncStorageCreateBoardRepository(asyncStorageListBoardRepository);
+
+export const asyncStorageCreateStoryRepository =
+  new AsyncStorageCreateStoryRepository();
