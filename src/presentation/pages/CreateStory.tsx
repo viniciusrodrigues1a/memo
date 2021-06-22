@@ -13,8 +13,9 @@ import { StackParamList } from "../routes/StackNavigation";
 import { createStoryUseCase } from "../factories";
 
 export default function CreateStory() {
+  const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const textInputRef = useRef<any>(null);
+  const descriptionInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
   const route = useRoute<RouteProp<StackParamList, "CreateStory">>();
 
@@ -29,8 +30,8 @@ export default function CreateStory() {
           <Text
             onPress={async () => {
               await createStoryUseCase.create({
-                title: "My task title",
-                content: textInputRef.current.value,
+                title,
+                content: description,
                 status: route.params,
               });
 
@@ -46,18 +47,28 @@ export default function CreateStory() {
         </TouchableOpacity>
       </View>
 
+      <TextInput
+        style={styles.titleInput}
+        value={title}
+        onChangeText={setTitle}
+        placeholder="Title of your new task"
+        placeholderTextColor="#888888"
+      />
+
+      <View style={styles.separator} />
+
       <TouchableOpacity
         activeOpacity={1}
         style={styles.inputButtonWrapper}
-        onPress={() => textInputRef.current.focus()}
+        onPress={() => descriptionInputRef.current.focus()}
       >
         <TextInput
-          ref={textInputRef}
-          style={styles.input}
+          ref={descriptionInputRef}
+          style={styles.descriptionInput}
           value={description}
           onChangeText={setDescription}
           placeholder="Type in the details of your new task..."
-          placeholderTextColor="#999999"
+          placeholderTextColor="#aaaaaa"
           multiline
           autoFocus
         />
@@ -87,9 +98,19 @@ const styles = StyleSheet.create({
   inputButtonWrapper: {
     height: "100%",
   },
-  input: {
-    fontSize: 16,
+  titleInput: {
     padding: 24,
-    color: "#222222",
+    color: "#111111",
+    fontSize: 16,
+  },
+  separator: {
+    marginHorizontal: 20,
+    height: 1,
+    backgroundColor: "#aaaaaa",
+  },
+  descriptionInput: {
+    padding: 24,
+    color: "#666666",
+    fontSize: 14,
   },
 });
