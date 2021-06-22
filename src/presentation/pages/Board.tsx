@@ -1,5 +1,16 @@
-import React, { useRef, useCallback, useState, useMemo } from "react";
-import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
+import React, {
+  useRef,
+  useCallback,
+  useState,
+  useMemo,
+  useEffect,
+} from "react";
+import {
+  useRoute,
+  useNavigation,
+  useIsFocused,
+  RouteProp,
+} from "@react-navigation/native";
 import {
   View,
   Text,
@@ -10,6 +21,9 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
+import { Status } from "../../entities/Status";
+import { showBoardUseCase } from "../factories";
+
 import { StackParamList } from "../routes/StackNavigation";
 
 import AddButton from "../components/AddButton";
@@ -19,6 +33,8 @@ const tabBarButtonWidth = Math.floor(windowWidth / 3);
 
 export default function Board() {
   const [contentIndex, setContentIndex] = useState(0);
+  const [statuses, setStatuses] = useState<Status[]>([]);
+  const isFocused = useIsFocused();
 
   const route = useRoute<RouteProp<StackParamList, "Board">>();
   const navigation = useNavigation();
@@ -26,13 +42,12 @@ export default function Board() {
   const contentFlatListRef = useRef(null);
   const tabBarFlatListRef = useRef(null);
 
-  const statuses = useMemo(() => {
-    if (route.params) {
-      return route.params.statuses;
-    }
-
-    return [];
-  }, [route]);
+  useEffect(() => {
+    (async () => {
+      const board = await showBoardUseCase.show(route.params.id);
+      setStatuses(board.statuses);
+    })();
+  }, [isFocused, route.params.id]);
 
   const onViewableItemsChanged = useCallback((items) => {
     if (items.viewableItems.length === 0) {
