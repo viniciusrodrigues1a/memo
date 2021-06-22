@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useCallback } from "react";
 import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
 import {
   View,
@@ -19,6 +19,24 @@ export default function CreateStory() {
   const navigation = useNavigation();
   const route = useRoute<RouteProp<StackParamList, "CreateStory">>();
 
+  async function createStory() {
+    await createStoryUseCase.create({
+      title,
+      content: description,
+      status: route.params,
+    });
+
+    navigation.goBack();
+  }
+
+  const focusDescriptionInput = useCallback(() => {
+    if (!descriptionInputRef.current) {
+      return;
+    }
+
+    descriptionInputRef.current.focus();
+  }, [descriptionInputRef]);
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -28,15 +46,7 @@ export default function CreateStory() {
 
         <TouchableOpacity disabled={description === ""}>
           <Text
-            onPress={async () => {
-              await createStoryUseCase.create({
-                title,
-                content: description,
-                status: route.params,
-              });
-
-              navigation.goBack();
-            }}
+            onPress={createStory}
             style={[
               styles.okText,
               { color: description === "" ? "#bbbbbb" : "#067C69" },
@@ -60,7 +70,7 @@ export default function CreateStory() {
       <TouchableOpacity
         activeOpacity={1}
         style={styles.inputButtonWrapper}
-        onPress={() => descriptionInputRef.current.focus()}
+        onPress={focusDescriptionInput}
       >
         <TextInput
           ref={descriptionInputRef}
