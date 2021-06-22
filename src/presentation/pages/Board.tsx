@@ -122,7 +122,7 @@ export default function Board() {
           <View style={contentFlatList.content}>
             <FlatList
               showsVerticalScrollIndicator={false}
-              keyExtractor={(_, index) => item.name}
+              keyExtractor={(i, index) => `${i.title}-${index}`}
               data={item.stories}
               renderItem={({ item: story }) => (
                 <View style={contentFlatList.story}>
