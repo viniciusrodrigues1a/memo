@@ -1,5 +1,10 @@
 import React, { useState, useRef, useCallback } from "react";
-import { useNavigation, useRoute, RouteProp } from "@react-navigation/native";
+import {
+  useNavigation,
+  useFocusEffect,
+  useRoute,
+  RouteProp,
+} from "@react-navigation/native";
 import {
   View,
   Text,
@@ -15,9 +20,18 @@ import { createStoryUseCase } from "../factories";
 export default function CreateStory() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const titleInputRef = useRef<TextInput>(null);
   const descriptionInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
   const route = useRoute<RouteProp<StackParamList, "CreateStory">>();
+
+  useFocusEffect(() => {
+    if (!titleInputRef.current) {
+      return;
+    }
+
+    titleInputRef.current.focus();
+  });
 
   async function createStory() {
     if (!description || !title) {
@@ -62,6 +76,7 @@ export default function CreateStory() {
       </View>
 
       <TextInput
+        ref={titleInputRef}
         style={styles.titleInput}
         value={title}
         onChangeText={setTitle}
