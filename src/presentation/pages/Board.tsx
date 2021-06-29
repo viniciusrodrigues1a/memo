@@ -153,7 +153,10 @@ export default function Board() {
 
       <AddButton
         onPress={() =>
-          navigation.navigate("CreateStory", route.params.statuses[0])
+          navigation.navigate(
+            "CreateStory",
+            route.params.statuses[contentIndex]
+          )
         }
       />
     </View>
