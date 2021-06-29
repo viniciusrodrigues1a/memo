@@ -20,6 +20,10 @@ export default function CreateStory() {
   const route = useRoute<RouteProp<StackParamList, "CreateStory">>();
 
   async function createStory() {
+    if (!description || !title) {
+      return;
+    }
+
     await createStoryUseCase.create({
       title,
       content: description,
@@ -49,7 +53,7 @@ export default function CreateStory() {
             onPress={createStory}
             style={[
               styles.okText,
-              { color: description === "" ? "#bbbbbb" : "#067C69" },
+              { color: !description || !title ? "#bbbbbb" : "#067C69" },
             ]}
           >
             Ok
