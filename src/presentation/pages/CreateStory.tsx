@@ -1,7 +1,7 @@
-import React, { useState, useRef, useCallback } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import {
   useNavigation,
-  useFocusEffect,
+  useIsFocused,
   useRoute,
   RouteProp,
 } from "@react-navigation/native";
@@ -23,15 +23,22 @@ export default function CreateStory() {
   const titleInputRef = useRef<TextInput>(null);
   const descriptionInputRef = useRef<TextInput>(null);
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
   const route = useRoute<RouteProp<StackParamList, "CreateStory">>();
 
-  useFocusEffect(() => {
-    if (!titleInputRef.current) {
+  const focusInput = useCallback((inputRef) => {
+    if (!inputRef.current) {
       return;
     }
 
-    titleInputRef.current.focus();
-  });
+    inputRef.current.focus();
+  }, []);
+
+  useEffect(() => {
+    if (isFocused) {
+      focusInput(titleInputRef);
+    }
+  }, [isFocused, focusInput]);
 
   async function createStory() {
     if (!description || !title) {
@@ -46,14 +53,6 @@ export default function CreateStory() {
 
     navigation.goBack();
   }
-
-  const focusDescriptionInput = useCallback(() => {
-    if (!descriptionInputRef.current) {
-      return;
-    }
-
-    descriptionInputRef.current.focus();
-  }, [descriptionInputRef]);
 
   return (
     <View style={styles.container}>
@@ -82,6 +81,7 @@ export default function CreateStory() {
         onChangeText={setTitle}
         placeholder="Title of your new task"
         placeholderTextColor="#888888"
+        onSubmitEditing={() => focusInput(descriptionInputRef)}
       />
 
       <View style={styles.separator} />
@@ -89,7 +89,7 @@ export default function CreateStory() {
       <TouchableOpacity
         activeOpacity={1}
         style={styles.inputButtonWrapper}
-        onPress={focusDescriptionInput}
+        onPress={() => focusInput(descriptionInputRef)}
       >
         <TextInput
           ref={descriptionInputRef}
