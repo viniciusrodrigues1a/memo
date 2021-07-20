@@ -6,6 +6,7 @@ import { Board as BoardType, Status } from "../../entities";
 import Home from "../pages/Home";
 import Board from "../pages/Board";
 import CreateStory from "../pages/CreateStory";
+import Story from "../pages/Story";
 
 export type StackParamList = {
   Home: undefined;
@@ -21,6 +22,7 @@ export default function StackNavigation() {
       <Stack.Screen name="Home" component={Home} />
       <Stack.Screen name="Board" component={Board} />
       <Stack.Screen name="CreateStory" component={CreateStory} />
+      <Stack.Screen name="Story" component={Story} />
     </Stack.Navigator>
   );
 }

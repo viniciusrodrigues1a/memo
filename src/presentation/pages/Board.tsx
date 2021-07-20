@@ -140,11 +140,14 @@ export default function Board() {
               keyExtractor={(i, index) => `${i.title}-${index}`}
               data={item.stories}
               renderItem={({ item: story }) => (
-                <View style={contentFlatList.story}>
+                <TouchableOpacity
+                  style={contentFlatList.story}
+                  onPress={() => navigation.navigate("Story")}
+                >
                   <Text style={contentFlatList.storyTitle}>{story.title}</Text>
 
                   <Text style={contentFlatList.storyDate}>Vence em 4 dias</Text>
-                </View>
+                </TouchableOpacity>
               )}
             />
           </View>
