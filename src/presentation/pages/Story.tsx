@@ -47,7 +47,7 @@ export default function Story() {
           onBlur={() => setIsTitleFocused(false)}
         />
 
-        <View style={[styles.header, { paddingHorizontal: isTitleFocused ?  }]}>
+        <View style={[styles.header, { paddingLeft: isTitleFocused ? 24 : 0 }]}>
           <TouchableOpacity disabled={description === ""}>
             <Text
               onPress={() => {}}
