@@ -8,13 +8,23 @@ export class CreateStoryUseCase {
     private showBoardRepository: IShowBoardRepository
   ) {}
 
-  async create({ title, content, status }: CreateStoryDTO): Promise<void> {
-    const board = await this.showBoardRepository.show(status.boardId);
+  async create({
+    title,
+    content,
+    boardId,
+    statusId,
+  }: CreateStoryDTO): Promise<void> {
+    const board = await this.showBoardRepository.show(boardId);
 
     if (!board) {
-      throw new InvalidStatusError(status.name);
+      throw new InvalidStatusError(statusId);
     }
 
-    await this.createStoryRepository.create({ title, content, status });
+    await this.createStoryRepository.create({
+      title,
+      content,
+      boardId,
+      statusId,
+    });
   }
 }

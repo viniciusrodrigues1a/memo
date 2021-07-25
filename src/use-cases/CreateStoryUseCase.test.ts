@@ -25,7 +25,7 @@ describe("Story creation use-case", () => {
     const boardId = "9aa1db2d-fcb8-45e4-89c8-a6e168e5ec4a";
     const status = {
       name: "todo",
-      boardId,
+      id: "status-id-0",
       colorHex: "#FF3300" as "#FF3300",
       stories: [],
     };
@@ -43,7 +43,8 @@ describe("Story creation use-case", () => {
     await sut.create({
       title: "Todo task",
       content: "Clean the living room",
-      status,
+      boardId: board.id,
+      statusId: status.id,
     });
 
     // then
@@ -58,7 +59,7 @@ describe("Story creation use-case", () => {
     const boardId = "2a262c28-8ef3-4740-8a44-b75302378446";
     const status = {
       name: "todo",
-      boardId,
+      id: "status-id-1",
       colorHex: "#FF3300" as "#FF3300",
       stories: [],
     };
@@ -67,9 +68,10 @@ describe("Story creation use-case", () => {
       sut.create({
         title: "Todo task",
         content: "Clean the living room",
-        status,
+        boardId,
+        statusId: status.id,
       })
-    ).rejects.toThrow(new InvalidStatusError("todo"));
+    ).rejects.toThrow(new InvalidStatusError(status.id));
   });
 
   it("should NOT remove older stories when adding a new one", async () => {
@@ -79,7 +81,7 @@ describe("Story creation use-case", () => {
     const boardId = "9aa1db2d-fcb8-45e4-89c8-a6e168e5ec4a";
     const status = {
       name: "todo",
-      boardId,
+      id: "status-id-2",
       colorHex: "#FF3300" as "#FF3300",
       stories: [],
     };
@@ -97,13 +99,15 @@ describe("Story creation use-case", () => {
     await sut.create({
       title: "Todo task",
       content: "Clean the living room",
-      status,
+      boardId,
+      statusId: status.id,
     });
 
     await sut.create({
       title: "Second task",
       content: "Do the dishes",
-      status,
+      boardId,
+      statusId: status.id,
     });
 
     // then

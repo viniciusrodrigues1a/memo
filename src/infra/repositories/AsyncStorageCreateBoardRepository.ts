@@ -19,19 +19,19 @@ export class AsyncStorageCreateBoardRepository
       statuses: [
         {
           name: "todo",
-          boardId,
+          id: uuid(),
           colorHex: "#FF3300",
           stories: [],
         },
         {
           name: "doing",
-          boardId,
+          id: uuid(),
           colorHex: "#FFB300",
           stories: [],
         },
         {
           name: "done",
-          boardId,
+          id: uuid(),
           colorHex: "#95FF00",
           stories: [],
         },

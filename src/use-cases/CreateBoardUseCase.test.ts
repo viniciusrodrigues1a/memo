@@ -45,7 +45,7 @@ describe("Board creation use-case", () => {
         statuses: [
           {
             name: "todo",
-            boardId: "9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d",
+            id: "status-id-1",
             colorHex: "#FF3300",
             stories: [],
           },

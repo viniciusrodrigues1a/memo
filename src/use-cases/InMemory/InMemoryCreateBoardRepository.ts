@@ -12,19 +12,19 @@ export class InMemoryCreateBoardRepository implements ICreateBoardRepository {
       statuses: [
         {
           name: "todo",
-          boardId,
+          id: "status-id-1",
           colorHex: "#FF3300",
           stories: [],
         },
         {
           name: "doing",
-          boardId,
+          id: "status-id-2",
           colorHex: "#FFB300",
           stories: [],
         },
         {
           name: "done",
-          boardId,
+          id: "status-id-3",
           colorHex: "#95FF00",
           stories: [],
         },

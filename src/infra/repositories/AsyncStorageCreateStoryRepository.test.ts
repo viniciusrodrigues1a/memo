@@ -14,7 +14,7 @@ describe("Story creation repository using Async Storage", () => {
     const boardId = "6b3ca6a7-2073-424b-8c0c-e1eed1c30b67";
     const status = {
       name: "todo",
-      boardId,
+      id: "status-id-0",
       colorHex: "#FF3300" as "#FF3300",
       stories: [],
     };
@@ -34,7 +34,8 @@ describe("Story creation repository using Async Storage", () => {
     await sut.create({
       title: "Studying",
       content: "Finish math homework",
-      status,
+      boardId,
+      statusId: status.id,
     });
 
     // then
@@ -55,7 +56,7 @@ describe("Story creation repository using Async Storage", () => {
     const boardId = "6b3ca6a7-2073-424b-8c0c-e1eed1c30b67";
     const status = {
       name: "todo",
-      boardId,
+      id: "status-id-1",
       colorHex: "#FF3300" as "#FF3300",
       stories: [],
     };
@@ -75,13 +76,15 @@ describe("Story creation repository using Async Storage", () => {
     await sut.create({
       title: "Studying",
       content: "Finish math homework",
-      status,
+      boardId,
+      statusId: status.id,
     });
 
     await sut.create({
       title: "Exercising",
       content: "Do 20 push ups",
-      status,
+      boardId,
+      statusId: status.id,
     });
 
     // then

@@ -40,7 +40,7 @@ describe("Board creation using AsyncStorage", () => {
       statuses: [
         {
           name: "todo",
-          boardId,
+          id: "status-id-0",
           colorHex: "#FF3300",
           stories: [],
         },

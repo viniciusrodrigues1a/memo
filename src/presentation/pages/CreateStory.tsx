@@ -48,7 +48,8 @@ export default function CreateStory() {
     await createStoryUseCase.create({
       title,
       content: description,
-      status: route.params,
+      boardId: route.params.boardId,
+      statusId: route.params.statusId,
     });
 
     navigation.goBack();

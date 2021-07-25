@@ -22,8 +22,8 @@ describe("List all boards use-case", () => {
         name,
         statuses: [
           {
+            id: "status-id",
             name: "todo",
-            boardId: id,
             colorHex: "#FF3300",
             stories: [],
           },

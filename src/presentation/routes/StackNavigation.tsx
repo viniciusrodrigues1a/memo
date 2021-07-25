@@ -16,7 +16,10 @@ export type StoryDTO = {
 export type StackParamList = {
   Home: undefined;
   Board: BoardType;
-  CreateStory: Status;
+  CreateStory: {
+    boardId: string;
+    statusId: string;
+  };
   Story: StoryDTO;
 };
 

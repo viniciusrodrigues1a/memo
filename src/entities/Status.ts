@@ -1,7 +1,7 @@
 import { Story } from "./Story";
 
 export type Status = {
-  boardId: string;
+  id: string;
   name: string;
   stories: Story[];
   colorHex:
