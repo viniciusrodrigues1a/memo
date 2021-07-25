@@ -142,7 +142,9 @@ export default function Board() {
               renderItem={({ item: story }) => (
                 <TouchableOpacity
                   style={contentFlatList.story}
-                  onPress={() => navigation.navigate("Story")}
+                  onPress={() =>
+                    navigation.navigate("Story", { status: item, story })
+                  }
                 >
                   <Text style={contentFlatList.storyTitle}>{story.title}</Text>
 

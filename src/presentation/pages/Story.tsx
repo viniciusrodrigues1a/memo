@@ -12,6 +12,9 @@ import {
   TextInput,
   StyleSheet,
 } from "react-native";
+import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
+import { StackParamList } from "../routes/StackNavigation";
+import { createStoryUseCase } from "../factories";
 
 export default function Story() {
   const [title, setTitle] = useState("");
@@ -20,6 +23,14 @@ export default function Story() {
   const titleInputRef = useRef<TextInput>(null);
   const descriptionInputRef = useRef<TextInput>(null);
 
+  const route = useRoute<RouteProp<StackParamList, "Story">>();
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    setTitle(route.params.story.title);
+    setDescription(route.params.story.content);
+  }, [route]);
+
   const focusInput = useCallback((inputRef) => {
     if (!inputRef.current) {
       return;
@@ -27,6 +38,26 @@ export default function Story() {
 
     inputRef.current.focus();
   }, []);
+
+  async function createStory() {
+    if (!description || !title) {
+      return;
+    }
+
+    await createStoryUseCase.create({
+      title,
+      content: description,
+      status: route.params.status,
+    });
+
+    navigation.goBack();
+  }
+
+  async function handleConfirmation() {
+    if (isTitleFocused) {
+      await createStory();
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -39,7 +70,7 @@ export default function Story() {
         <TextInput
           ref={titleInputRef}
           style={styles.titleInput}
-          value="Dishes"
+          value={title}
           onChangeText={setTitle}
           placeholderTextColor="#888888"
           onSubmitEditing={() => focusInput(descriptionInputRef)}
@@ -65,7 +96,7 @@ export default function Story() {
 
           <TouchableOpacity disabled={description === ""}>
             <Text
-              onPress={() => {}}
+              onPress={handleConfirmation}
               style={[styles.okText, { color: "#067C69", fontWeight: "bold" }]}
             >
               {isTitleFocused ? "SAVE" : "MORE"}
@@ -82,7 +113,7 @@ export default function Story() {
         <TextInput
           ref={descriptionInputRef}
           style={styles.descriptionInput}
-          value="Do the dishes"
+          value={description}
           onChangeText={setDescription}
           placeholderTextColor="#aaaaaa"
           multiline
