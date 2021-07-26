@@ -148,6 +148,10 @@ export default function Board() {
                 >
                   <Text style={contentFlatList.storyTitle}>{story.title}</Text>
 
+                  <Text style={contentFlatList.storyContent}>
+                    {story.content}
+                  </Text>
+
                   <Text style={contentFlatList.storyDate}>Vence em 4 dias</Text>
                 </TouchableOpacity>
               )}
@@ -225,6 +229,11 @@ const contentFlatList = StyleSheet.create({
   storyTitle: {
     fontSize: 26,
     color: "#222222",
+  },
+  storyContent: {
+    fontSize: 16,
+    color: "#666666",
+    marginTop: 16,
   },
   storyDate: {
     marginTop: 42,
