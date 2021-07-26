@@ -1,10 +1,12 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Board } from "../../entities";
+import { Story } from "../../entities";
 import { AsyncStorageCreateStoryRepository } from "./AsyncStorageCreateStoryRepository";
 
 describe("Story creation repository using Async Storage", () => {
   afterEach(async () => {
     await AsyncStorage.removeItem("@Memo:boards");
+    await AsyncStorage.removeItem("@Memo:statuses");
+    await AsyncStorage.removeItem("@Memo:stories");
   });
 
   it("should be able to create a story", async () => {
@@ -14,6 +16,7 @@ describe("Story creation repository using Async Storage", () => {
     const boardId = "6b3ca6a7-2073-424b-8c0c-e1eed1c30b67";
     const status = {
       name: "todo",
+      boardId,
       id: "status-id-0",
       colorHex: "#FF3300" as "#FF3300",
       stories: [],
@@ -25,28 +28,24 @@ describe("Story creation repository using Async Storage", () => {
         {
           id: boardId,
           name: "My board",
-          statuses: [status],
         },
       ])
     );
+    await AsyncStorage.setItem("@Memo:statuses", JSON.stringify([status]));
 
     // when
     await sut.create({
       title: "Studying",
       content: "Finish math homework",
-      boardId,
       statusId: status.id,
     });
 
     // then
-    const boards = JSON.parse(
-      (await AsyncStorage.getItem("@Memo:boards")) as string
+    const stories = JSON.parse(
+      (await AsyncStorage.getItem("@Memo:stories")) as string
     );
 
-    const storedBoard = boards.find((b: Board) => b.id === boardId);
-    expect(storedBoard.statuses[0].stories[0].content).toEqual(
-      "Finish math homework"
-    );
+    expect(stories[0].content).toEqual("Finish math homework");
   });
 
   it("should persist previous values", async () => {
@@ -67,34 +66,30 @@ describe("Story creation repository using Async Storage", () => {
         {
           id: boardId,
           name: "My board",
-          statuses: [status],
         },
       ])
     );
+    await AsyncStorage.setItem("@Memo:statuses", JSON.stringify([status]));
 
     // when
     await sut.create({
       title: "Studying",
       content: "Finish math homework",
-      boardId,
       statusId: status.id,
     });
 
     await sut.create({
       title: "Exercising",
       content: "Do 20 push ups",
-      boardId,
       statusId: status.id,
     });
 
     // then
-    const boards = JSON.parse(
-      (await AsyncStorage.getItem("@Memo:boards")) as string
+    const stories: Story[] = JSON.parse(
+      (await AsyncStorage.getItem("@Memo:stories")) as string
     );
 
-    const storedBoard = boards.find((b: Board) => b.id === boardId);
-    expect(storedBoard.statuses[0].stories[0].content).toEqual(
-      "Finish math homework"
-    );
+    const story = stories.find((s) => s.content === "Finish math homework");
+    expect(story).toHaveProperty("content");
   });
 });

@@ -13,6 +13,7 @@ import {
   StyleSheet,
 } from "react-native";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackParamList } from "../routes/StackNavigation";
 
 import { createStoryUseCase } from "../factories";
@@ -48,7 +49,6 @@ export default function CreateStory() {
     await createStoryUseCase.create({
       title,
       content: description,
-      boardId: route.params.boardId,
       statusId: route.params.statusId,
     });
 

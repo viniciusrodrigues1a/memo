@@ -11,7 +11,7 @@ class MockListBoardRepository implements IListBoardRepository {
 
 function makeSut() {
   const mockListBoardRepository = new MockListBoardRepository();
-  const sut = new AsyncStorageCreateBoardRepository(mockListBoardRepository);
+  const sut = new AsyncStorageCreateBoardRepository();
 
   return { sut, mockListBoardRepository };
 }
@@ -31,33 +31,18 @@ describe("Board creation using AsyncStorage", () => {
   });
 
   it("should NOT remove other Boards when adding a new one", async () => {
-    const { sut, mockListBoardRepository } = makeSut();
+    const { sut } = makeSut();
 
-    const boardId = "85d08a66-1e16-4cb6-879f-4339b7d46b9a";
-    const olderBoard: Board = {
-      id: boardId,
-      name: "My first board",
-      statuses: [
-        {
-          name: "todo",
-          id: "status-id-0",
-          colorHex: "#FF3300",
-          stories: [],
-        },
-      ],
-    };
+    const olderBoardName = "My first board";
 
-    mockListBoardRepository.list = jest.fn(
-      async (): Promise<Board[]> => [olderBoard]
-    );
-
+    await sut.create(olderBoardName);
     await sut.create("My second board");
 
     const boards = JSON.parse(
       (await AsyncStorage.getItem("@Memo:boards")) as string
     );
 
-    const storedBoard = boards.find((b: Board) => b.name === olderBoard.name);
-    expect(storedBoard.name).toEqual(olderBoard.name);
+    const storedBoard = boards.find((b: Board) => b.name === olderBoardName);
+    expect(storedBoard.name).toEqual(olderBoardName);
   });
 });

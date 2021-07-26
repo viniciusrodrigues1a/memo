@@ -1,10 +1,10 @@
 import { CreateStoryUseCase } from "../../use-cases";
 import {
   asyncStorageCreateStoryRepository,
-  asyncStorageShowBoardRepository,
+  asyncStorageShowStatusRepository,
 } from "./repository-instances";
 
 export const createStoryUseCase = new CreateStoryUseCase(
   asyncStorageCreateStoryRepository,
-  asyncStorageShowBoardRepository
+  asyncStorageShowStatusRepository
 );

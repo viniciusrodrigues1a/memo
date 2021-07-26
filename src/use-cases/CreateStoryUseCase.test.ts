@@ -43,7 +43,6 @@ describe("Story creation use-case", () => {
     await sut.create({
       title: "Todo task",
       content: "Clean the living room",
-      boardId: board.id,
       statusId: status.id,
     });
 
@@ -68,7 +67,6 @@ describe("Story creation use-case", () => {
       sut.create({
         title: "Todo task",
         content: "Clean the living room",
-        boardId,
         statusId: status.id,
       })
     ).rejects.toThrow(new InvalidStatusError(status.id));
@@ -99,14 +97,12 @@ describe("Story creation use-case", () => {
     await sut.create({
       title: "Todo task",
       content: "Clean the living room",
-      boardId,
       statusId: status.id,
     });
 
     await sut.create({
       title: "Second task",
       content: "Do the dishes",
-      boardId,
       statusId: status.id,
     });
 

@@ -36,5 +36,6 @@ module.exports = {
     "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }],
     "no-nested-ternary": "off",
     "@typescript-eslint/no-shadow": "off",
+    "no-plusplus": "off",
   },
 };

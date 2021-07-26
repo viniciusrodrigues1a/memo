@@ -1,32 +1,19 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { Board } from "../../entities";
+import { v4 as uuid } from "uuid";
 import { CreateStoryDTO } from "../../use-cases/dtos";
 import { ICreateStoryRepository } from "../../use-cases/interfaces";
 
 export class AsyncStorageCreateStoryRepository
   implements ICreateStoryRepository
 {
-  async create({
-    title,
-    content,
-    boardId,
-    statusId,
-  }: CreateStoryDTO): Promise<void> {
-    const boards: Board[] = JSON.parse(
-      (await AsyncStorage.getItem("@Memo:boards")) as string
+  async create({ title, content, statusId }: CreateStoryDTO): Promise<void> {
+    let stories = JSON.parse(
+      (await AsyncStorage.getItem("@Memo:stories")) || "[]"
     );
 
-    const storedStatus = boards
-      .find((b) => b.id === boardId)
-      ?.statuses.find((s) => s.id === statusId);
+    stories = stories.concat([{ title, content, statusId, id: uuid() }]);
 
-    if (!storedStatus) {
-      throw new Error("storedStatus is undefined");
-    }
-
-    storedStatus.stories = storedStatus.stories.concat([{ title, content }]);
-
-    await AsyncStorage.setItem("@Memo:boards", JSON.stringify(boards));
+    await AsyncStorage.setItem("@Memo:stories", JSON.stringify(stories));
   }
 }
