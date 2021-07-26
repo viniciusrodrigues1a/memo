@@ -19,7 +19,7 @@ import { updateStoryUseCase } from "../factories";
 export default function Story() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [isTitleFocused, setIsTitleFocused] = useState(false);
+  const [isInputFocused, setIsInputFocused] = useState(false);
   const titleInputRef = useRef<TextInput>(null);
   const descriptionInputRef = useRef<TextInput>(null);
 
@@ -54,7 +54,7 @@ export default function Story() {
   }
 
   async function handleConfirmation() {
-    if (isTitleFocused) {
+    if (isInputFocused) {
       await updateStory();
     }
   }
@@ -64,7 +64,7 @@ export default function Story() {
       <View
         style={[
           styles.headerWrapper,
-          { flexDirection: isTitleFocused ? "column-reverse" : "row" },
+          { flexDirection: isInputFocused ? "column-reverse" : "row" },
         ]}
       >
         <TextInput
@@ -74,11 +74,11 @@ export default function Story() {
           onChangeText={setTitle}
           placeholderTextColor="#888888"
           onSubmitEditing={() => focusInput(descriptionInputRef)}
-          onFocus={() => setIsTitleFocused(true)}
-          onBlur={() => setIsTitleFocused(false)}
+          onFocus={() => setIsInputFocused(true)}
+          onBlur={() => setIsInputFocused(false)}
         />
 
-        <View style={[styles.header, { paddingLeft: isTitleFocused ? 24 : 0 }]}>
+        <View style={[styles.header, { paddingLeft: isInputFocused ? 24 : 0 }]}>
           <TouchableOpacity disabled={description === ""}>
             <Text
               onPress={() => {}}
@@ -86,7 +86,7 @@ export default function Story() {
                 styles.cancelText,
                 {
                   color: "#067C69",
-                  display: isTitleFocused ? "flex" : "none",
+                  display: isInputFocused ? "flex" : "none",
                 },
               ]}
             >
@@ -99,7 +99,7 @@ export default function Story() {
               onPress={handleConfirmation}
               style={[styles.okText, { color: "#067C69", fontWeight: "bold" }]}
             >
-              {isTitleFocused ? "SAVE" : "MORE"}
+              {isInputFocused ? "SAVE" : "MORE"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -118,6 +118,8 @@ export default function Story() {
           placeholderTextColor="#aaaaaa"
           multiline
           autoFocus
+          onFocus={() => setIsInputFocused(true)}
+          onBlur={() => setIsInputFocused(false)}
         />
       </TouchableOpacity>
     </View>
