@@ -53,6 +53,12 @@ export default function Story() {
     navigation.goBack();
   }
 
+  function closeHeaderMenu() {
+    titleInputRef.current?.blur();
+    descriptionInputRef.current?.blur();
+    setIsInputFocused(false);
+  }
+
   async function handleConfirmation() {
     if (isInputFocused) {
       await updateStory();
@@ -81,7 +87,7 @@ export default function Story() {
         <View style={[styles.header, { paddingLeft: isInputFocused ? 24 : 0 }]}>
           <TouchableOpacity disabled={description === ""}>
             <Text
-              onPress={() => {}}
+              onPress={closeHeaderMenu}
               style={[
                 styles.cancelText,
                 {
