@@ -14,7 +14,7 @@ import {
 } from "react-native";
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
 import { StackParamList } from "../routes/StackNavigation";
-import { createStoryUseCase } from "../factories";
+import { updateStoryUseCase } from "../factories";
 
 export default function Story() {
   const [title, setTitle] = useState("");
@@ -39,15 +39,15 @@ export default function Story() {
     inputRef.current.focus();
   }, []);
 
-  async function createStory() {
+  async function updateStory() {
     if (!description || !title) {
       return;
     }
 
-    await createStoryUseCase.create({
+    await updateStoryUseCase.update({
       title,
       content: description,
-      statusId: route.params.status.id,
+      storyId: route.params.story.id,
     });
 
     navigation.goBack();
@@ -55,7 +55,7 @@ export default function Story() {
 
   async function handleConfirmation() {
     if (isTitleFocused) {
-      await createStory();
+      await updateStory();
     }
   }
 
