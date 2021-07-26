@@ -1,5 +1,4 @@
 import { mock } from "jest-mock-extended";
-import { Story } from "../entities";
 import { NoStoryFoundError } from "./errors";
 import { IShowStoryRepository, IUpdateStoryRepository } from "./interfaces";
 import { UpdateStoryUseCase } from "./UpdateStoryUseCase";
@@ -23,8 +22,8 @@ describe("Updating a story use-case", () => {
     showStoryRepository.show.mockResolvedValueOnce({
       title: "My story",
       content: "My story's content",
-      storyId: "story-id-0",
-    } as Story);
+      id: "story-id-0",
+    });
 
     await sut.update({
       storyId: "story-id-0",

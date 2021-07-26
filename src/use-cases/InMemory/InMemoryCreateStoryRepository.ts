@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import { ICreateStoryRepository } from "../interfaces";
 import { CreateStoryDTO } from "../dtos";
 import { inMemoryHelperArray } from "./inMemoryHelperArray";
@@ -17,6 +18,6 @@ export class InMemoryCreateStoryRepository implements ICreateStoryRepository {
       }
     }
 
-    status!.stories = status!.stories.concat([{ title, content }]);
+    status!.stories = status!.stories.concat([{ title, content, id: uuid() }]);
   }
 }
