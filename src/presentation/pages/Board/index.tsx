@@ -1,10 +1,4 @@
-import React, {
-  useRef,
-  useCallback,
-  useState,
-  useMemo,
-  useEffect,
-} from "react";
+import React, { useRef, useCallback, useState, useEffect } from "react";
 import {
   useRoute,
   useNavigation,
@@ -21,12 +15,13 @@ import {
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
-import { Status } from "../../entities/Status";
-import { showBoardUseCase } from "../factories";
+import { Status } from "../../../entities/Status";
+import { showBoardUseCase } from "../../factories";
 
-import { StackParamList } from "../routes/StackNavigation";
+import { StackParamList } from "../../routes/StackNavigation";
 
-import AddButton from "../components/AddButton";
+import AddButton from "../../components/AddButton";
+import { Card } from "./Card";
 
 const windowWidth = Dimensions.get("window").width;
 const tabBarButtonWidth = Math.floor(windowWidth / 3);
@@ -73,16 +68,16 @@ export default function Board() {
 
   return (
     <View style={{ flex: 1 }}>
-      <View style={header.container}>
+      <View style={headerStyles.container}>
         <TouchableOpacity>
-          <Text style={header.searchText}>SEARCH</Text>
+          <Text style={headerStyles.searchText}>SEARCH</Text>
         </TouchableOpacity>
       </View>
 
       <View style={{ height: 58 }}>
         <FlatList
           ref={tabBarFlatListRef}
-          style={tabFlatList.container}
+          style={tabFlatListStyles.container}
           showsHorizontalScrollIndicator={false}
           horizontal
           keyExtractor={(item) => item.name}
@@ -96,7 +91,7 @@ export default function Board() {
                   })
                 }
                 style={[
-                  tabFlatList.tabButton,
+                  tabFlatListStyles.tabButton,
                   {
                     borderBottomColor:
                       index === contentIndex ? "#ffffff" : "#4A9C8F",
@@ -105,7 +100,7 @@ export default function Board() {
               >
                 <Text
                   style={[
-                    tabFlatList.tabButtonText,
+                    tabFlatListStyles.tabButtonText,
                     { color: index === contentIndex ? "#ffffff" : "#cccccc" },
                   ]}
                 >
@@ -114,7 +109,7 @@ export default function Board() {
               </TouchableOpacity>
 
               {index === 4 && (
-                <TouchableOpacity style={tabFlatList.buttonAddTab}>
+                <TouchableOpacity style={tabFlatListStyles.buttonAddTab}>
                   <Feather name="plus" color="#1F8978" size={28} />
                 </TouchableOpacity>
               )}
@@ -125,7 +120,7 @@ export default function Board() {
 
       <FlatList
         ref={contentFlatListRef}
-        style={contentFlatList.container}
+        style={contentFlatListStyles.container}
         decelerationRate="fast"
         snapToInterval={windowWidth}
         showsHorizontalScrollIndicator={false}
@@ -133,28 +128,13 @@ export default function Board() {
         horizontal
         keyExtractor={(_, index) => index.toString()}
         data={statuses}
-        renderItem={({ item }) => (
-          <View style={contentFlatList.content}>
+        renderItem={({ item: status }) => (
+          <View style={contentFlatListStyles.content}>
             <FlatList
               showsVerticalScrollIndicator={false}
-              keyExtractor={(i, index) => `${i.title}-${index}`}
-              data={item.stories}
-              renderItem={({ item: story }) => (
-                <TouchableOpacity
-                  style={contentFlatList.story}
-                  onPress={() =>
-                    navigation.navigate("Story", { status: item, story })
-                  }
-                >
-                  <Text style={contentFlatList.storyTitle}>{story.title}</Text>
-
-                  <Text style={contentFlatList.storyContent}>
-                    {story.content}
-                  </Text>
-
-                  <Text style={contentFlatList.storyDate}>Vence em 4 dias</Text>
-                </TouchableOpacity>
-              )}
+              keyExtractor={(i) => i.id}
+              data={status.stories}
+              renderItem={({ item: story }) => <Card story={story} />}
             />
           </View>
         )}
@@ -172,7 +152,7 @@ export default function Board() {
   );
 }
 
-const header = StyleSheet.create({
+const headerStyles = StyleSheet.create({
   container: {
     backgroundColor: "#067C69",
     height: 60,
@@ -189,7 +169,7 @@ const header = StyleSheet.create({
   },
 });
 
-const tabFlatList = StyleSheet.create({
+const tabFlatListStyles = StyleSheet.create({
   container: { backgroundColor: "#1F8978", elevation: 14 },
   tabButton: {
     height: 58,
@@ -214,30 +194,9 @@ const tabFlatList = StyleSheet.create({
   },
 });
 
-const contentFlatList = StyleSheet.create({
+const contentFlatListStyles = StyleSheet.create({
   container: { backgroundColor: "#fcfcfc" },
   content: {
     width: windowWidth,
-  },
-  story: {
-    backgroundColor: "#f9f9f9",
-    margin: 16,
-    padding: 24,
-    borderRadius: 4,
-    elevation: 10,
-  },
-  storyTitle: {
-    fontSize: 26,
-    color: "#222222",
-  },
-  storyContent: {
-    fontSize: 16,
-    color: "#666666",
-    marginTop: 16,
-  },
-  storyDate: {
-    marginTop: 42,
-    fontSize: 14,
-    color: "#888888",
   },
 });

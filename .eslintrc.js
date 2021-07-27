@@ -37,5 +37,6 @@ module.exports = {
     "no-nested-ternary": "off",
     "@typescript-eslint/no-shadow": "off",
     "no-plusplus": "off",
+    "import/no-extraneous-dependencies": "off",
   },
 };

@@ -8,11 +8,6 @@ import Board from "../pages/Board";
 import CreateStory from "../pages/CreateStory";
 import Story from "../pages/Story";
 
-export type StoryDTO = {
-  status: Status;
-  story: StoryType;
-};
-
 export type StackParamList = {
   Home: undefined;
   Board: BoardType;
@@ -20,7 +15,7 @@ export type StackParamList = {
     boardId: string;
     statusId: string;
   };
-  Story: StoryDTO;
+  Story: StoryType;
 };
 
 const Stack = createStackNavigator<StackParamList>();

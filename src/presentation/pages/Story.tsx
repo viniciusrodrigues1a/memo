@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useRef,
-  useCallback,
-  useEffect,
-  useMemo,
-} from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import {
   View,
   Text,
@@ -27,8 +21,8 @@ export default function Story() {
   const navigation = useNavigation();
 
   useEffect(() => {
-    setTitle(route.params.story.title);
-    setDescription(route.params.story.content);
+    setTitle(route.params.title);
+    setDescription(route.params.content);
   }, [route]);
 
   const focusInput = useCallback((inputRef) => {
@@ -47,7 +41,7 @@ export default function Story() {
     await updateStoryUseCase.update({
       title,
       content: description,
-      storyId: route.params.story.id,
+      storyId: route.params.id,
     });
 
     navigation.goBack();
