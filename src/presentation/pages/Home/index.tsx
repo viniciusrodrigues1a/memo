@@ -16,17 +16,15 @@ import { useKeyboard } from "@react-native-community/hooks";
 import Constants from "expo-constants";
 
 import { showError } from "../../utils/toasts";
-import {
-  BoardAlreadyExistsError,
-  NoBoardFoundError,
-} from "../../../use-cases/errors";
+import { BoardAlreadyExistsError } from "../../../use-cases/errors";
 import { Board } from "../../../entities";
-import { createBoardUseCase, listBoardUseCase } from "../../factories";
+import { createBoardUseCase } from "../../factories";
 
 import EmptyBoards from "./EmptyBoards";
 import NoBoardFound from "./NoBoardFound";
 
 import AddButton from "../../components/AddButton";
+import { AsyncStorageServiceFactoryImpl } from "../../factories/services";
 
 const DownTriangleImg = require("../../assets/down-triangle.png");
 const AtSignImg = require("../../assets/at-sign.png");
@@ -63,16 +61,11 @@ export default function Home() {
   const fetchBoards = useCallback(async () => {
     setLoading(true);
 
-    try {
-      const storedBoards = await listBoardUseCase.list();
-      setBoardsResponse({ error: false, boards: storedBoards });
-    } catch (err) {
-      if (err instanceof NoBoardFoundError) {
-        setBoardsResponse({ error: false, boards: [] });
-      } else {
-        setBoardsResponse({ error: true, boards: [] });
-      }
-    }
+    const listBoardService =
+      new AsyncStorageServiceFactoryImpl().makeListBoardService();
+    const serviceResponse = await listBoardService.list();
+
+    setBoardsResponse(serviceResponse);
 
     await new Promise((resolve) => setTimeout(resolve, 200));
 

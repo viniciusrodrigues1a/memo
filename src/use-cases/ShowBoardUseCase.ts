@@ -1,5 +1,5 @@
 import { Board } from "../entities";
-import { IShowBoardRepository } from "./interfaces";
+import { IShowBoardRepository } from "./repositories";
 import { BoardNotFoundError } from "./errors";
 
 export class ShowBoardUseCase {

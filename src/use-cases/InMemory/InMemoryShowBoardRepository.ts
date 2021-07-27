@@ -1,5 +1,5 @@
 import { Board } from "../../entities";
-import { IShowBoardRepository } from "../interfaces/IShowBoardRepository";
+import { IShowBoardRepository } from "../repositories";
 import { inMemoryHelperArray } from "./inMemoryHelperArray";
 
 export class InMemoryShowBoardRepository implements IShowBoardRepository {

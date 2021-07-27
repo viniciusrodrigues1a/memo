@@ -1,4 +1,4 @@
-import { ICreateBoardRepository, IShowBoardRepository } from "./interfaces";
+import { ICreateBoardRepository, IShowBoardRepository } from "./repositories";
 import {
   BoardAlreadyExistsError,
   BoardNameExceedsMaximumLength,

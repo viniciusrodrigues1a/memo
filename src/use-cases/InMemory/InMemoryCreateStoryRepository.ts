@@ -1,5 +1,5 @@
 import { v4 as uuid } from "uuid";
-import { ICreateStoryRepository } from "../interfaces";
+import { ICreateStoryRepository } from "../repositories";
 import { CreateStoryDTO } from "../dtos";
 import { inMemoryHelperArray } from "./inMemoryHelperArray";
 import { Status } from "../../entities";

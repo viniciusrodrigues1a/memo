@@ -1,6 +1,6 @@
 import { UpdateStoryDTO } from "./dtos";
 import { NoStoryFoundError } from "./errors";
-import { IShowStoryRepository, IUpdateStoryRepository } from "./interfaces";
+import { IShowStoryRepository, IUpdateStoryRepository } from "./repositories";
 
 class UpdateStoryUseCase {
   constructor(

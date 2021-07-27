@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Board, Status } from "../../entities";
-import { ICreateBoardRepository } from "../../use-cases/interfaces";
+import { ICreateBoardRepository } from "../../use-cases/repositories";
 
 export class AsyncStorageCreateBoardRepository
   implements ICreateBoardRepository

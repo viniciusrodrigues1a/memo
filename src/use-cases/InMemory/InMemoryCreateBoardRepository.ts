@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 import { Board } from "../../entities";
-import { ICreateBoardRepository } from "../interfaces";
+import { ICreateBoardRepository } from "../repositories";
 import { inMemoryHelperArray } from "./inMemoryHelperArray";
 
 export class InMemoryCreateBoardRepository implements ICreateBoardRepository {

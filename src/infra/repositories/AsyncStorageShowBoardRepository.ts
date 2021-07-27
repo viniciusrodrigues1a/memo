@@ -2,7 +2,7 @@ import { Board } from "../../entities";
 import {
   IShowBoardRepository,
   IListBoardRepository,
-} from "../../use-cases/interfaces";
+} from "../../use-cases/repositories";
 
 export class AsyncStorageShowBoardRepository implements IShowBoardRepository {
   constructor(private listBoardRepository: IListBoardRepository) {}

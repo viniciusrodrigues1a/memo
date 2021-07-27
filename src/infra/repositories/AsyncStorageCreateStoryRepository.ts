@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { v4 as uuid } from "uuid";
 import { CreateStoryDTO } from "../../use-cases/dtos";
-import { ICreateStoryRepository } from "../../use-cases/interfaces";
+import { ICreateStoryRepository } from "../../use-cases/repositories";
 
 export class AsyncStorageCreateStoryRepository
   implements ICreateStoryRepository

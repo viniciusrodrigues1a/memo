@@ -1,6 +1,6 @@
 import { mock } from "jest-mock-extended";
 import { NoStoryFoundError } from "./errors";
-import { IShowStoryRepository, IUpdateStoryRepository } from "./interfaces";
+import { IShowStoryRepository, IUpdateStoryRepository } from "./repositories";
 import { UpdateStoryUseCase } from "./UpdateStoryUseCase";
 
 function makeSut() {

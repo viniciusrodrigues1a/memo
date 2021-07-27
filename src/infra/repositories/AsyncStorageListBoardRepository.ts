@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { IListBoardRepository } from "../../use-cases/interfaces";
+import { IListBoardRepository } from "../../use-cases/repositories";
 import { Board } from "../../entities";
 
 export class AsyncStorageListBoardRepository implements IListBoardRepository {

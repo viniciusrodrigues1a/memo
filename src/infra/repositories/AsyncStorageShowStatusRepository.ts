@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Status } from "../../entities";
-import { IShowStatusRepository } from "../../use-cases/interfaces";
+import { IShowStatusRepository } from "../../use-cases/repositories";
 
 class AsyncStorageShowStatusRepository implements IShowStatusRepository {
   async show(id: string): Promise<Status | undefined> {

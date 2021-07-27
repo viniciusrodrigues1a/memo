@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Story } from "../../entities";
 import { UpdateStoryDTO } from "../../use-cases/dtos";
-import { IUpdateStoryRepository } from "../../use-cases/interfaces";
+import { IUpdateStoryRepository } from "../../use-cases/repositories";
 
 class AsyncStorageUpdateStoryRepository implements IUpdateStoryRepository {
   async update({ title, content, storyId }: UpdateStoryDTO): Promise<void> {

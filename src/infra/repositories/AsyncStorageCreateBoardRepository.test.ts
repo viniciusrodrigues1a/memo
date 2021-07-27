@@ -1,7 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AsyncStorageCreateBoardRepository } from "./AsyncStorageCreateBoardRepository";
 import { Board } from "../../entities";
-import { IListBoardRepository } from "../../use-cases/interfaces";
+import { IListBoardRepository } from "../../use-cases/repositories";
 
 class MockListBoardRepository implements IListBoardRepository {
   async list(): Promise<Board[]> {

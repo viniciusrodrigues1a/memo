@@ -1,5 +1,5 @@
 import { CreateStoryDTO } from "./dtos";
-import { ICreateStoryRepository, IShowStatusRepository } from "./interfaces";
+import { ICreateStoryRepository, IShowStatusRepository } from "./repositories";
 import { InvalidStatusError } from "./errors";
 
 export class CreateStoryUseCase {
