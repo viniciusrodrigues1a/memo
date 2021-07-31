@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useContext } from "react";
 import { useNavigation } from "@react-navigation/native";
 import {
   View,
@@ -24,7 +24,7 @@ import EmptyBoards from "./EmptyBoards";
 import NoBoardFound from "./NoBoardFound";
 
 import AddButton from "../../components/AddButton";
-import { AsyncStorageServiceFactoryImpl } from "../../factories/services";
+import { ServicesContext } from "../../contexts";
 
 const DownTriangleImg = require("../../assets/down-triangle.png");
 const AtSignImg = require("../../assets/at-sign.png");
@@ -38,6 +38,8 @@ type BoardsState = {
 };
 
 export default function Home() {
+  const { listBoardService } = useContext(ServicesContext);
+
   const [isModalShown, setIsModalShown] = useState(false);
   const [loading, setLoading] = useState(false);
   const [boardsResponse, setBoardsResponse] = useState<BoardsState>({
@@ -61,8 +63,6 @@ export default function Home() {
   const fetchBoards = useCallback(async () => {
     setLoading(true);
 
-    const listBoardService =
-      new AsyncStorageServiceFactoryImpl().makeListBoardService();
     const serviceResponse = await listBoardService.list();
 
     setBoardsResponse(serviceResponse);
@@ -70,7 +70,7 @@ export default function Home() {
     await new Promise((resolve) => setTimeout(resolve, 200));
 
     setLoading(false);
-  }, []);
+  }, [listBoardService]);
 
   useEffect(() => {
     fetchBoards();

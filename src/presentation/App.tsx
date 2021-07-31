@@ -6,13 +6,16 @@ import { RootSiblingParent } from "react-native-root-siblings";
 import StatusBar from "./components/StatusBar";
 
 import Routes from "./routes";
+import { ServicesProvider } from "./contexts";
 
 export default function App() {
   return (
     <>
       <StatusBar />
       <RootSiblingParent>
-        <Routes />
+        <ServicesProvider>
+          <Routes />
+        </ServicesProvider>
       </RootSiblingParent>
     </>
   );
