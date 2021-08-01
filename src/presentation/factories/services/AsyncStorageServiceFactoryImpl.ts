@@ -19,11 +19,11 @@ export class AsyncStorageServiceFactoryImpl implements IServiceFactory {
   makeCreateStoryService(): CreateStoryService {
     const createStoryRepository =
       this.repositoryFactory.makeCreateStoryRepository();
-    const showStoryRepository =
-      this.repositoryFactory.makeShowStoryRepository();
+    const showStatusRepository =
+      this.repositoryFactory.makeShowStatusRepository();
     const useCase = new CreateStoryUseCase(
       createStoryRepository,
-      showStoryRepository
+      showStatusRepository
     );
     const service = new CreateStoryService(useCase);
 
