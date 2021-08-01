@@ -38,7 +38,7 @@ type BoardsState = {
 };
 
 export default function Home() {
-  const { listBoardService } = useContext(ServicesContext);
+  const { listBoardService, createBoardService } = useContext(ServicesContext);
 
   const [isModalShown, setIsModalShown] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -82,14 +82,11 @@ export default function Home() {
       return;
     }
 
-    try {
-      await createBoardUseCase.create(boardName);
-    } catch (err) {
-      if (err instanceof BoardAlreadyExistsError) {
-        showError(err.message);
-      } else {
-        showError(err.message);
-      }
+    const serviceResponse = await createBoardService.handle(boardName);
+
+    if (serviceResponse.error) {
+      showError(serviceResponse.errorMessage!);
+      return;
     }
 
     await fetchBoards();

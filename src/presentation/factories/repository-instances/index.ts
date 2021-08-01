@@ -1,5 +1,4 @@
 import {
-  AsyncStorageCreateBoardRepository,
   AsyncStorageShowBoardRepository,
   AsyncStorageListBoardRepository,
   AsyncStorageCreateStoryRepository,
@@ -13,9 +12,6 @@ export const asyncStorageListBoardRepository =
 
 export const asyncStorageShowBoardRepository =
   new AsyncStorageShowBoardRepository(asyncStorageListBoardRepository);
-
-export const asyncStorageCreateBoardRepository =
-  new AsyncStorageCreateBoardRepository();
 
 export const asyncStorageCreateStoryRepository =
   new AsyncStorageCreateStoryRepository();

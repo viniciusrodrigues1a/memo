@@ -1,9 +1,10 @@
 import React, { createContext, useMemo } from "react";
 import { AsyncStorageServiceFactoryImpl } from "../factories/services";
-import { ListBoardService } from "../services";
+import { CreateBoardService, ListBoardService } from "../services";
 
 type ServicesContextData = {
   listBoardService: ListBoardService;
+  createBoardService: CreateBoardService;
 };
 
 type ServicesProviderProps = {
@@ -20,6 +21,7 @@ export const ServicesProvider = ({
 
     return {
       listBoardService: factoryImpl.makeListBoardService(),
+      createBoardService: factoryImpl.makeCreateBoardService(),
     };
   }, []);
 
