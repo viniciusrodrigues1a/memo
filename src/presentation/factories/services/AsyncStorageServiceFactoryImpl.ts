@@ -1,17 +1,16 @@
 import { CreateBoardUseCase, ListBoardUseCase } from "../../../use-cases";
 import { CreateBoardService, ListBoardService } from "../../services";
-import {
-  AsyncStorageCreateBoardRepositoryFactory,
-  AsyncStorageListBoardRepositoryFactory,
-  AsyncStorageShowBoardRepositoryFactory,
-} from "../repositories/AsyncStorage";
+import { IRepositoryFactory } from "../repositories";
 import { IServiceFactory } from "./IServiceFactory";
 
 export class AsyncStorageServiceFactoryImpl implements IServiceFactory {
+  constructor(private repositoryFactory: IRepositoryFactory) {}
+
   makeCreateBoardService(): CreateBoardService {
     const createBoardRepository =
-      AsyncStorageCreateBoardRepositoryFactory.make();
-    const showBoardRepository = AsyncStorageShowBoardRepositoryFactory.make();
+      this.repositoryFactory.makeCreateBoardRepository();
+    const showBoardRepository =
+      this.repositoryFactory.makeShowBoardRepository();
     const useCase = new CreateBoardUseCase(
       createBoardRepository,
       showBoardRepository
@@ -22,7 +21,8 @@ export class AsyncStorageServiceFactoryImpl implements IServiceFactory {
   }
 
   makeListBoardService(): ListBoardService {
-    const listBoardRepository = AsyncStorageListBoardRepositoryFactory.make();
+    const listBoardRepository =
+      this.repositoryFactory.makeListBoardRepository();
     const useCase = new ListBoardUseCase(listBoardRepository);
     const service = new ListBoardService(useCase);
 

@@ -1,4 +1,5 @@
 import React, { createContext, useMemo } from "react";
+import { AsyncStorageRepositoryFactoryImpl } from "../factories/repositories";
 import { AsyncStorageServiceFactoryImpl } from "../factories/services";
 import { CreateBoardService, ListBoardService } from "../services";
 
@@ -17,11 +18,14 @@ export const ServicesProvider = ({
   children,
 }: ServicesProviderProps): React.ReactElement => {
   const servicesContextData: ServicesContextData = useMemo(() => {
-    const factoryImpl = new AsyncStorageServiceFactoryImpl();
+    const repositoryFactoryImpl = new AsyncStorageRepositoryFactoryImpl();
+    const serviceFactoryImpl = new AsyncStorageServiceFactoryImpl(
+      repositoryFactoryImpl
+    );
 
     return {
-      listBoardService: factoryImpl.makeListBoardService(),
-      createBoardService: factoryImpl.makeCreateBoardService(),
+      listBoardService: serviceFactoryImpl.makeListBoardService(),
+      createBoardService: serviceFactoryImpl.makeCreateBoardService(),
     };
   }, []);
 
