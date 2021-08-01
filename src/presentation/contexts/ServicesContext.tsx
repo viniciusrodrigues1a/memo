@@ -3,6 +3,7 @@ import { AsyncStorageRepositoryFactoryImpl } from "../factories/repositories";
 import { AsyncStorageServiceFactoryImpl } from "../factories/services";
 import {
   CreateBoardService,
+  CreateStoryService,
   ListBoardService,
   ShowBoardService,
 } from "../services";
@@ -11,6 +12,7 @@ type ServicesContextData = {
   listBoardService: ListBoardService;
   createBoardService: CreateBoardService;
   showBoardService: ShowBoardService;
+  createStoryService: CreateStoryService;
 };
 
 type ServicesProviderProps = {
@@ -32,6 +34,7 @@ export const ServicesProvider = ({
       listBoardService: serviceFactoryImpl.makeListBoardService(),
       createBoardService: serviceFactoryImpl.makeCreateBoardService(),
       showBoardService: serviceFactoryImpl.makeShowBoardService(),
+      createStoryService: serviceFactoryImpl.makeCreateStoryService(),
     };
   }, []);
 

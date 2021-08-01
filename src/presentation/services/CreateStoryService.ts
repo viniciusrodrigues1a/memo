@@ -12,7 +12,6 @@ export class CreateStoryService {
   }: CreateStoryDTO): Promise<BaseResponse> {
     try {
       await this.createStoryUseCase.create({ title, content, statusId });
-
       return { error: false, errorMessage: null };
     } catch (err) {}
 

@@ -1,4 +1,10 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+  useContext,
+} from "react";
 import {
   useNavigation,
   useIsFocused,
@@ -16,9 +22,11 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackParamList } from "../routes/StackNavigation";
 
-import { createStoryUseCase } from "../factories";
+import { ServicesContext } from "../contexts";
 
 export default function CreateStory() {
+  const { createStoryService } = useContext(ServicesContext);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const titleInputRef = useRef<TextInput>(null);
@@ -46,7 +54,7 @@ export default function CreateStory() {
       return;
     }
 
-    await createStoryUseCase.create({
+    await createStoryService.handle({
       title,
       content: description,
       statusId: route.params.statusId,
