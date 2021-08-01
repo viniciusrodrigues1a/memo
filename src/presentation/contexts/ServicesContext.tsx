@@ -1,11 +1,16 @@
 import React, { createContext, useMemo } from "react";
 import { AsyncStorageRepositoryFactoryImpl } from "../factories/repositories";
 import { AsyncStorageServiceFactoryImpl } from "../factories/services";
-import { CreateBoardService, ListBoardService } from "../services";
+import {
+  CreateBoardService,
+  ListBoardService,
+  ShowBoardService,
+} from "../services";
 
 type ServicesContextData = {
   listBoardService: ListBoardService;
   createBoardService: CreateBoardService;
+  showBoardService: ShowBoardService;
 };
 
 type ServicesProviderProps = {
@@ -26,6 +31,7 @@ export const ServicesProvider = ({
     return {
       listBoardService: serviceFactoryImpl.makeListBoardService(),
       createBoardService: serviceFactoryImpl.makeCreateBoardService(),
+      showBoardService: serviceFactoryImpl.makeShowBoardService(),
     };
   }, []);
 

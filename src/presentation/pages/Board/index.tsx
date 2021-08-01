@@ -1,4 +1,10 @@
-import React, { useRef, useCallback, useState, useEffect } from "react";
+import React, {
+  useRef,
+  useCallback,
+  useState,
+  useEffect,
+  useContext,
+} from "react";
 import {
   useRoute,
   useNavigation,
@@ -22,11 +28,14 @@ import { StackParamList } from "../../routes/StackNavigation";
 
 import AddButton from "../../components/AddButton";
 import { Card } from "./Card";
+import { ServicesContext } from "../../contexts";
+import { showError } from "../../utils/toasts";
 
 const windowWidth = Dimensions.get("window").width;
 const tabBarButtonWidth = Math.floor(windowWidth / 3);
 
 export default function Board() {
+  const { showBoardService } = useContext(ServicesContext);
   const [contentIndex, setContentIndex] = useState(0);
   const [statuses, setStatuses] = useState<Status[]>([]);
   const isFocused = useIsFocused();
@@ -39,10 +48,11 @@ export default function Board() {
 
   useEffect(() => {
     (async () => {
-      const board = await showBoardUseCase.show(route.params.id);
-      setStatuses(board.statuses);
+      const serviceResponse = await showBoardService.handle(route.params.id);
+
+      setStatuses(serviceResponse.board!.statuses);
     })();
-  }, [isFocused, route.params.id]);
+  }, [isFocused, route.params.id, showBoardService]);
 
   const onViewableItemsChanged = useCallback((items) => {
     if (items.viewableItems.length === 0) {
