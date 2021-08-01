@@ -1,6 +1,6 @@
 import { Board } from "../entities";
 import { IShowBoardRepository } from "./repositories";
-import { BoardNotFoundError } from "./errors";
+import { NoBoardFoundError } from "./errors";
 
 export class ShowBoardUseCase {
   constructor(private showBoardRepository: IShowBoardRepository) {}
@@ -9,7 +9,7 @@ export class ShowBoardUseCase {
     const board = await this.showBoardRepository.show(id);
 
     if (!board) {
-      throw new BoardNotFoundError(id);
+      throw new NoBoardFoundError();
     }
 
     return board;

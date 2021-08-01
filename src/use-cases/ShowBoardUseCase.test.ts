@@ -1,5 +1,5 @@
 import { inMemoryHelperArray, InMemoryShowBoardRepository } from "./InMemory";
-import { BoardNotFoundError } from "./errors";
+import { NoBoardFoundError } from "./errors";
 import { ShowBoardUseCase } from "./ShowBoardUseCase";
 
 function makeSut() {
@@ -36,13 +36,11 @@ describe("Show a Board use-case", () => {
     expect(board.name).toEqual("My board");
   });
 
-  it("should throw error BoardNotFoundError", async () => {
+  it("should throw error NoBoardFoundError", async () => {
     const { sut } = makeSut();
 
     await expect(
       sut.show("1f79fbbe-ee10-443c-81aa-c8b023ba0080")
-    ).rejects.toThrow(
-      new BoardNotFoundError("1f79fbbe-ee10-443c-81aa-c8b023ba0080")
-    );
+    ).rejects.toThrow(new NoBoardFoundError());
   });
 });
