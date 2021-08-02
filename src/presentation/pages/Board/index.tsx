@@ -28,6 +28,9 @@ import { StackParamList } from "../../routes/StackNavigation";
 import AddButton from "../../components/AddButton";
 import { Card } from "./Card";
 import { ServicesContext } from "../../contexts";
+import EmptyFlatList from "../../components/EmptyFlatList";
+
+import EmptyStoryImg from "../../assets/empty-story.png";
 
 const windowWidth = Dimensions.get("window").width;
 const tabBarButtonWidth = Math.floor(windowWidth / 3);
@@ -73,6 +76,13 @@ export default function Board() {
       onViewableItemsChanged,
     },
   ]);
+
+  function goToStoryCreationPage() {
+    navigation.navigate("CreateStory", {
+      boardId: route.params.id,
+      statusId: route.params.statuses[contentIndex].id,
+    });
+  }
 
   return (
     <View style={{ flex: 1 }}>
@@ -138,24 +148,26 @@ export default function Board() {
         data={statuses}
         renderItem={({ item: status }) => (
           <View style={contentFlatListStyles.content}>
-            <FlatList
-              showsVerticalScrollIndicator={false}
-              keyExtractor={(i) => i.id}
-              data={status.stories}
-              renderItem={({ item: story }) => <Card story={story} />}
-            />
+            {status.stories.length === 0 ? (
+              <EmptyFlatList
+                buttonOnPress={goToStoryCreationPage}
+                buttonText="Create a story"
+                text="No story was found"
+                imageSource={EmptyStoryImg}
+              />
+            ) : (
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                keyExtractor={(i) => i.id}
+                data={status.stories}
+                renderItem={({ item: story }) => <Card story={story} />}
+              />
+            )}
           </View>
         )}
       />
 
-      <AddButton
-        onPress={() =>
-          navigation.navigate("CreateStory", {
-            boardId: route.params.id,
-            statusId: route.params.statuses[contentIndex].id,
-          })
-        }
-      />
+      <AddButton onPress={goToStoryCreationPage} />
     </View>
   );
 }
