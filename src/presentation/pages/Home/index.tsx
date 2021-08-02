@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback, useContext } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 import {
   View,
   TouchableOpacity,
@@ -49,6 +49,7 @@ export default function Home() {
   const [boardName, setBoardName] = useState("");
 
   const navigation = useNavigation();
+  const isPageFocused = useIsFocused();
   const keyboard = useKeyboard();
 
   function openModal() {
@@ -73,8 +74,10 @@ export default function Home() {
   }, [listBoardService]);
 
   useEffect(() => {
-    fetchBoards();
-  }, [fetchBoards]);
+    if (isPageFocused) {
+      fetchBoards();
+    }
+  }, [fetchBoards, isPageFocused]);
 
   async function createBoard() {
     if (boardName === "") {
@@ -158,7 +161,9 @@ export default function Home() {
                         </Text>
                       </View>
                       <View>
-                        <Text style={boardStyle.statusText}>7</Text>
+                        <Text style={boardStyle.statusText}>
+                          {status.stories.length}
+                        </Text>
                       </View>
                     </View>
                   </View>
