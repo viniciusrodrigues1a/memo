@@ -157,7 +157,12 @@ export default function Home() {
                     <View
                       style={[
                         boardStyle.statusCircle,
-                        { backgroundColor: "#ff0000" },
+                        {
+                          backgroundColor: status.colorHex,
+                          borderWidth: 1.5,
+                          borderStyle: "solid",
+                          borderColor: "#666",
+                        },
                       ]}
                     />
 
@@ -301,8 +306,8 @@ const boardStyle = StyleSheet.create({
     marginTop: 4,
   },
   statusCircle: {
-    width: 8,
-    height: 8,
+    width: 10,
+    height: 10,
     borderRadius: 8,
     alignSelf: "center",
   },
