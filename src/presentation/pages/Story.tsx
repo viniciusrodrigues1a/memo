@@ -1,4 +1,10 @@
-import React, { useState, useRef, useCallback, useEffect } from "react";
+import React, {
+  useState,
+  useRef,
+  useCallback,
+  useEffect,
+  useContext,
+} from "react";
 import {
   View,
   Text,
@@ -8,9 +14,11 @@ import {
 } from "react-native";
 import { useRoute, useNavigation, RouteProp } from "@react-navigation/native";
 import { StackParamList } from "../routes/StackNavigation";
-import { updateStoryUseCase } from "../factories";
+import { ServicesContext } from "../contexts";
+import { showError } from "../utils/toasts";
 
 export default function Story() {
+  const { updateStoryService } = useContext(ServicesContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [isInputFocused, setIsInputFocused] = useState(false);
@@ -38,11 +46,16 @@ export default function Story() {
       return;
     }
 
-    await updateStoryUseCase.update({
+    const response = await updateStoryService.handle({
       title,
       content: description,
       storyId: route.params.id,
     });
+
+    if (response.error) {
+      showError(response.errorMessage!);
+      return;
+    }
 
     navigation.goBack();
   }
