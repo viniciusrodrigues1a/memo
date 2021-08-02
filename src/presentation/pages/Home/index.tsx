@@ -42,6 +42,7 @@ export default function Home() {
 
   const [isModalShown, setIsModalShown] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isDataCached, setIsDataCached] = useState(false);
   const [boardsResponse, setBoardsResponse] = useState<BoardsState>({
     error: false,
     boards: [],
@@ -62,16 +63,22 @@ export default function Home() {
   }
 
   const fetchBoards = useCallback(async () => {
-    setLoading(true);
+    if (!isDataCached) {
+      setLoading(true);
+    }
 
     const serviceResponse = await listBoardService.list();
+
+    if (!serviceResponse.error) {
+      setIsDataCached(true);
+    }
 
     setBoardsResponse(serviceResponse);
 
     await new Promise((resolve) => setTimeout(resolve, 200));
 
     setLoading(false);
-  }, [listBoardService]);
+  }, [listBoardService, isDataCached]);
 
   useEffect(() => {
     if (isPageFocused) {
