@@ -23,6 +23,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackParamList } from "../routes/StackNavigation";
 
 import { ServicesContext } from "../contexts";
+import { showError } from "../utils/toasts";
 
 export default function CreateStory() {
   const { createStoryService } = useContext(ServicesContext);
@@ -54,11 +55,16 @@ export default function CreateStory() {
       return;
     }
 
-    await createStoryService.handle({
+    const response = await createStoryService.handle({
       title,
       content: description,
       statusId: route.params.statusId,
     });
+
+    if (response.error) {
+      showError(response.errorMessage!);
+      return;
+    }
 
     navigation.goBack();
   }
