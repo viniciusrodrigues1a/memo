@@ -72,6 +72,15 @@ export default function Story() {
     }
   }
 
+  function handleInputFocusedStateOnBlur() {
+    if (
+      !titleInputRef.current?.isFocused() &&
+      !descriptionInputRef.current?.isFocused()
+    ) {
+      setIsInputFocused(false);
+    }
+  }
+
   return (
     <View style={styles.container}>
       <View
@@ -88,7 +97,7 @@ export default function Story() {
           placeholderTextColor="#888888"
           onSubmitEditing={() => focusInput(descriptionInputRef)}
           onFocus={() => setIsInputFocused(true)}
-          onBlur={() => setIsInputFocused(false)}
+          onBlur={handleInputFocusedStateOnBlur}
         />
 
         <View style={[styles.header, { paddingLeft: isInputFocused ? 24 : 0 }]}>
@@ -132,7 +141,7 @@ export default function Story() {
           multiline
           autoFocus
           onFocus={() => setIsInputFocused(true)}
-          onBlur={() => setIsInputFocused(false)}
+          onBlur={handleInputFocusedStateOnBlur}
         />
       </TouchableOpacity>
     </View>
