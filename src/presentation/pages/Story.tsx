@@ -21,7 +21,7 @@ export default function Story() {
   const { updateStoryService } = useContext(ServicesContext);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
-  const [isInputFocused, setIsInputFocused] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
   const titleInputRef = useRef<TextInput>(null);
   const descriptionInputRef = useRef<TextInput>(null);
 
@@ -63,11 +63,11 @@ export default function Story() {
   function closeHeaderMenu() {
     titleInputRef.current?.blur();
     descriptionInputRef.current?.blur();
-    setIsInputFocused(false);
+    setIsEditing(false);
   }
 
   async function handleConfirmation() {
-    if (isInputFocused) {
+    if (isEditing) {
       await updateStory();
     }
   }
@@ -77,7 +77,7 @@ export default function Story() {
       !titleInputRef.current?.isFocused() &&
       !descriptionInputRef.current?.isFocused()
     ) {
-      setIsInputFocused(false);
+      setIsEditing(false);
     }
   }
 
@@ -86,7 +86,7 @@ export default function Story() {
       <View
         style={[
           styles.headerWrapper,
-          { flexDirection: isInputFocused ? "column-reverse" : "row" },
+          { flexDirection: isEditing ? "column-reverse" : "row" },
         ]}
       >
         <TextInput
@@ -96,11 +96,11 @@ export default function Story() {
           onChangeText={setTitle}
           placeholderTextColor="#888888"
           onSubmitEditing={() => focusInput(descriptionInputRef)}
-          onFocus={() => setIsInputFocused(true)}
+          onFocus={() => setIsEditing(true)}
           onBlur={handleInputFocusedStateOnBlur}
         />
 
-        <View style={[styles.header, { paddingLeft: isInputFocused ? 24 : 0 }]}>
+        <View style={[styles.header, { paddingLeft: isEditing ? 24 : 0 }]}>
           <TouchableOpacity disabled={description === ""}>
             <Text
               onPress={closeHeaderMenu}
@@ -108,7 +108,7 @@ export default function Story() {
                 styles.cancelText,
                 {
                   color: "#067C69",
-                  display: isInputFocused ? "flex" : "none",
+                  display: isEditing ? "flex" : "none",
                 },
               ]}
             >
@@ -121,7 +121,7 @@ export default function Story() {
               onPress={handleConfirmation}
               style={[styles.okText, { color: "#067C69", fontWeight: "bold" }]}
             >
-              {isInputFocused ? "SAVE" : "MORE"}
+              {isEditing ? "SAVE" : "MORE"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -140,7 +140,7 @@ export default function Story() {
           placeholderTextColor="#aaaaaa"
           multiline
           autoFocus
-          onFocus={() => setIsInputFocused(true)}
+          onFocus={() => setIsEditing(true)}
           onBlur={handleInputFocusedStateOnBlur}
         />
       </TouchableOpacity>
