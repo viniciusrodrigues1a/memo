@@ -91,7 +91,10 @@ export default function Story() {
       >
         <TextInput
           ref={titleInputRef}
-          style={styles.titleInput}
+          style={[
+            styles.titleInput,
+            { flex: isEditing ? 0 : 1, marginRight: isEditing ? 0 : 24 },
+          ]}
           value={title}
           onChangeText={setTitle}
           placeholderTextColor="#888888"
