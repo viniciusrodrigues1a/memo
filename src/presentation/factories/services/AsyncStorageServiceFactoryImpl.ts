@@ -3,18 +3,34 @@ import {
   CreateStoryUseCase,
   ListBoardUseCase,
   ShowBoardUseCase,
+  UpdateStoryUseCase,
 } from "../../../use-cases";
 import {
   CreateBoardService,
   CreateStoryService,
   ListBoardService,
   ShowBoardService,
+  UpdateStoryService,
 } from "../../services";
 import { IRepositoryFactory } from "../repositories";
 import { IServiceFactory } from "./IServiceFactory";
 
 export class AsyncStorageServiceFactoryImpl implements IServiceFactory {
   constructor(private repositoryFactory: IRepositoryFactory) {}
+
+  makeUpdateStoryService(): UpdateStoryService {
+    const updateStoryRepository =
+      this.repositoryFactory.makeUpdateStoryRepository();
+    const showStoryRepository =
+      this.repositoryFactory.makeShowStoryRepository();
+    const useCase = new UpdateStoryUseCase(
+      updateStoryRepository,
+      showStoryRepository
+    );
+    const service = new UpdateStoryService(useCase);
+
+    return service;
+  }
 
   makeCreateStoryService(): CreateStoryService {
     const createStoryRepository =

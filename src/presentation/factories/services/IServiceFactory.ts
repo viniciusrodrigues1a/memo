@@ -3,6 +3,7 @@ import {
   CreateStoryService,
   ListBoardService,
   ShowBoardService,
+  UpdateStoryService,
 } from "../../services";
 
 export interface IServiceFactory {
@@ -10,4 +11,5 @@ export interface IServiceFactory {
   makeCreateBoardService(): CreateBoardService;
   makeShowBoardService(): ShowBoardService;
   makeCreateStoryService(): CreateStoryService;
+  makeUpdateStoryService(): UpdateStoryService;
 }
