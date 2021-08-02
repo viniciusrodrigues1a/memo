@@ -20,7 +20,7 @@ import { BoardAlreadyExistsError } from "../../../use-cases/errors";
 import { Board } from "../../../entities";
 import { createBoardUseCase } from "../../factories";
 
-import EmptyBoards from "./EmptyBoards";
+import EmptyFlatList from "../../components/EmptyFlatList";
 import NoBoardFound from "./NoBoardFound";
 
 import AddButton from "../../components/AddButton";
@@ -28,6 +28,8 @@ import { ServicesContext } from "../../contexts";
 
 const DownTriangleImg = require("../../assets/down-triangle.png");
 const AtSignImg = require("../../assets/at-sign.png");
+
+const LayoutImg = require("../../assets/layout.png");
 
 const contentHeight =
   Dimensions.get("window").height - Constants.statusBarHeight;
@@ -131,7 +133,12 @@ export default function Home() {
       ) : boardsResponse.error ? (
         <NoBoardFound onPress={async () => fetchBoards()} />
       ) : boardsResponse.boards.length === 0 ? (
-        <EmptyBoards buttonOnPress={openModal} />
+        <EmptyFlatList
+          buttonOnPress={openModal}
+          buttonText="Create your first board"
+          text="No board was found"
+          imageSource={LayoutImg}
+        />
       ) : (
         <FlatList
           showsVerticalScrollIndicator={false}

@@ -1,26 +1,40 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ImageSourcePropType,
+} from "react-native";
 
-const FrownImg = require("../../assets/frown.png");
-const LayoutImg = require("../../assets/layout.png");
+const FrownImg = require("../assets/frown.png");
 
-type EmptyBoardsProps = {
+type EmptyFlatListProps = {
   buttonOnPress: () => void;
+  buttonText: string;
+  text: string;
+  imageSource: ImageSourcePropType;
 };
 
-export default function EmptyBoards({ buttonOnPress }: EmptyBoardsProps) {
+export default function EmptyFlatList({
+  buttonOnPress,
+  buttonText,
+  text,
+  imageSource,
+}: EmptyFlatListProps) {
   return (
     <View style={styles.container}>
-      <Image source={LayoutImg} width={180} height={180} />
+      <Image source={imageSource} width={180} height={180} />
 
       <View style={styles.textView}>
-        <Text style={styles.text}>No board was found</Text>
+        <Text style={styles.text}>{text}</Text>
 
         <Image source={FrownImg} width={40} height={40} />
       </View>
 
       <TouchableOpacity style={styles.button} onPress={buttonOnPress}>
-        <Text style={styles.buttonText}>Create your first board</Text>
+        <Text style={styles.buttonText}>{buttonText}</Text>
       </TouchableOpacity>
     </View>
   );
