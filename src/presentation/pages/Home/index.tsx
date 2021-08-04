@@ -25,6 +25,7 @@ import NoBoardFound from "./NoBoardFound";
 
 import AddButton from "../../components/AddButton";
 import { ServicesContext } from "../../contexts";
+import { SearchingHeader } from "./SearchingHeader";
 
 const DownTriangleImg = require("../../assets/down-triangle.png");
 const AtSignImg = require("../../assets/at-sign.png");
@@ -42,14 +43,14 @@ type BoardsState = {
 export default function Home() {
   const { listBoardService, createBoardService } = useContext(ServicesContext);
 
+  const [isSearching, setIsSearching] = useState(false);
   const [isModalShown, setIsModalShown] = useState(false);
   const [loading, setLoading] = useState(false);
   const [isDataCached, setIsDataCached] = useState(false);
-  const [boardsResponse, setBoardsResponse] = useState<BoardsState>({
-    error: false,
-    boards: [],
-  });
+  const [allBoards, setAllBoards] = useState<Array<Board>>([]);
+  const [filteredBoards, setFilteredBoards] = useState<Array<Board>>([]);
   const [boardName, setBoardName] = useState("");
+  const [requestError, setRequestError] = useState(false);
 
   const navigation = useNavigation();
   const isPageFocused = useIsFocused();
@@ -71,11 +72,10 @@ export default function Home() {
 
     const serviceResponse = await listBoardService.list();
 
-    if (!serviceResponse.error) {
-      setIsDataCached(true);
-    }
-
-    setBoardsResponse(serviceResponse);
+    setIsDataCached(!serviceResponse.error);
+    setRequestError(serviceResponse.error);
+    setAllBoards(serviceResponse.boards);
+    setFilteredBoards(serviceResponse.boards);
 
     await new Promise((resolve) => setTimeout(resolve, 200));
 
@@ -87,6 +87,18 @@ export default function Home() {
       fetchBoards();
     }
   }, [fetchBoards, isPageFocused]);
+
+  const filterBoards = useCallback(
+    (searchValue) => {
+      const regexp = new RegExp(searchValue, "i");
+      const filteredBoards = allBoards.filter((board) =>
+        regexp.test(board.name)
+      );
+
+      setFilteredBoards(filteredBoards);
+    },
+    [allBoards]
+  );
 
   async function createBoard() {
     if (boardName === "") {
@@ -108,20 +120,36 @@ export default function Home() {
   return (
     <View style={{ height: contentHeight }}>
       <View style={headerStyles.header}>
-        <TouchableOpacity style={headerStyles.filterButton}>
-          <Text style={headerStyles.filterText}>All memos</Text>
-          <Image source={DownTriangleImg} style={headerStyles.filterImage} />
-        </TouchableOpacity>
-        <View style={headerStyles.options}>
-          <TouchableOpacity style={headerStyles.optionButton}>
-            <Text style={headerStyles.optionText}>SEARCH</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[headerStyles.optionButton, { marginLeft: 18 }]}
-          >
-            <Text style={headerStyles.optionText}>MORE</Text>
-          </TouchableOpacity>
-        </View>
+        {isSearching ? (
+          <SearchingHeader
+            onDebouncedEditing={filterBoards}
+            onCancel={() => setIsSearching(false)}
+          />
+        ) : (
+          <>
+            <TouchableOpacity style={headerStyles.filterButton}>
+              <Text style={headerStyles.filterText}>All memos</Text>
+              <Image
+                source={DownTriangleImg}
+                style={headerStyles.filterImage}
+              />
+            </TouchableOpacity>
+
+            <View style={headerStyles.options}>
+              <TouchableOpacity
+                style={headerStyles.optionButton}
+                onPress={() => setIsSearching(true)}
+              >
+                <Text style={headerStyles.optionText}>SEARCH</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[headerStyles.optionButton, { marginLeft: 18 }]}
+              >
+                <Text style={headerStyles.optionText}>MORE</Text>
+              </TouchableOpacity>
+            </View>
+          </>
+        )}
       </View>
 
       {loading ? (
@@ -130,9 +158,9 @@ export default function Home() {
         >
           <ActivityIndicator color="#222222" size="large" />
         </View>
-      ) : boardsResponse.error ? (
+      ) : requestError ? (
         <NoBoardFound onPress={async () => fetchBoards()} />
-      ) : boardsResponse.boards.length === 0 ? (
+      ) : filteredBoards.length === 0 ? (
         <EmptyFlatList
           buttonOnPress={openModal}
           buttonText="Create your first board"
@@ -143,7 +171,7 @@ export default function Home() {
         <FlatList
           showsVerticalScrollIndicator={false}
           keyExtractor={(item) => item.id}
-          data={boardsResponse.boards}
+          data={filteredBoards}
           renderItem={({ item, index }) => (
             <TouchableOpacity
               onPress={() => navigation.navigate("Board", item)}
@@ -151,8 +179,7 @@ export default function Home() {
                 boardStyle.container,
                 {
                   marginTop: index === 0 ? 36 : 16,
-                  marginBottom:
-                    index === boardsResponse.boards.length - 1 ? 36 : 16,
+                  marginBottom: index === filteredBoards.length - 1 ? 36 : 16,
                 },
               ]}
             >
@@ -193,7 +220,7 @@ export default function Home() {
         />
       )}
 
-      {!loading && !boardsResponse.error && (
+      {!loading && !requestError && (
         <AddButton
           onPress={openModal}
           style={{ elevation: isModalShown ? 0 : 12 }}
