@@ -18,6 +18,7 @@ import {
   FlatList,
   StyleSheet,
   Dimensions,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
@@ -31,6 +32,7 @@ import { ServicesContext } from "../../contexts";
 import EmptyFlatList from "../../components/EmptyFlatList";
 
 import EmptyStoryImg from "../../assets/empty-story.png";
+import { Story } from "../../../entities";
 
 const windowWidth = Dimensions.get("window").width;
 const tabBarButtonWidth = Math.floor(windowWidth / 3);
@@ -39,6 +41,8 @@ export default function Board() {
   const { showBoardService } = useContext(ServicesContext);
   const [contentIndex, setContentIndex] = useState(0);
   const [statuses, setStatuses] = useState<Status[]>([]);
+  const [isSelectingForDeletion, setIsSelectingForDeletion] = useState(false);
+  const [storiesToDelete, setStoriesToDelete] = useState<Array<string>>([]);
   const isFocused = useIsFocused();
 
   const route = useRoute<RouteProp<StackParamList, "Board">>();
@@ -83,6 +87,58 @@ export default function Board() {
       statusId: route.params.statuses[contentIndex].id,
     });
   }
+
+  function handleCardPress(story: Story) {
+    if (isSelectingForDeletion) {
+      toggleStoryFromDeletionArray(story.id);
+    } else {
+      goToStoryPage(story);
+    }
+  }
+
+  function goToStoryPage(story: Story) {
+    navigation.navigate("Story", story);
+  }
+
+  function handleCardLongPress(story: Story) {
+    setIsSelectingForDeletion(true);
+    addStoryToDeletionArray(story.id);
+  }
+
+  function toggleStoryFromDeletionArray(id: string) {
+    if (isStoryBeingDeleted(id)) {
+      removeStoryFromDeletionArray(id);
+    } else {
+      addStoryToDeletionArray(id);
+    }
+  }
+
+  function addStoryToDeletionArray(id: string) {
+    if (isStoryBeingDeleted(id)) {
+      return;
+    }
+
+    const newStories = storiesToDelete.concat([id]);
+    setStoriesToDelete(newStories);
+  }
+
+  function isStoryBeingDeleted(id: string): boolean {
+    const storyAlreadyInArray = storiesToDelete.indexOf(id) !== -1;
+    if (storyAlreadyInArray) {
+      return true;
+    }
+
+    return false;
+  }
+
+  function removeStoryFromDeletionArray(id: string) {
+    const filteredStories = storiesToDelete.filter((s) => s !== id);
+    setStoriesToDelete(filteredStories);
+  }
+
+  useEffect(() => {
+    console.log("updated", storiesToDelete);
+  }, [storiesToDelete]);
 
   return (
     <View style={{ flex: 1 }}>
@@ -160,7 +216,20 @@ export default function Board() {
                 showsVerticalScrollIndicator={false}
                 keyExtractor={(i) => i.id}
                 data={status.stories}
-                renderItem={({ item: story }) => <Card story={story} />}
+                renderItem={({ item: story }) => (
+                  <View>
+                    {isSelectingForDeletion && (
+                      <Text>
+                        {String(storiesToDelete.indexOf(story.id) !== -1)}
+                      </Text>
+                    )}
+                    <Card
+                      story={story}
+                      onPress={() => handleCardPress(story)}
+                      onLongPress={() => handleCardLongPress(story)}
+                    />
+                  </View>
+                )}
               />
             )}
           </View>

@@ -1,18 +1,19 @@
-import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
 import { Story } from "../../../entities";
 
 type CardProps = {
   story: Story;
+  onPress: () => void;
+  onLongPress: () => void;
 };
 
-export function Card({ story }: CardProps) {
-  const navigation = useNavigation();
+export function Card({ story, onLongPress, onPress }: CardProps) {
   return (
     <TouchableOpacity
       style={styles.container}
-      onPress={() => navigation.navigate("Story", story)}
+      onPress={onPress}
+      onLongPress={onLongPress}
     >
       <Text style={styles.title}>{story.title}</Text>
 
