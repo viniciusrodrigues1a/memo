@@ -33,6 +33,7 @@ import EmptyFlatList from "../../components/EmptyFlatList";
 
 import EmptyStoryImg from "../../assets/empty-story.png";
 import { Story } from "../../../entities";
+import { SelectAll } from "./SelectAll";
 
 const windowWidth = Dimensions.get("window").width;
 const tabBarButtonWidth = Math.floor(windowWidth / 3);
@@ -136,9 +137,30 @@ export default function Board() {
     setStoriesToDelete(filteredStories);
   }
 
+  function handleSelectAll() {
+    const { stories } = statuses[contentIndex];
+
+    const areAllStoriesBeingDeleted = stories.length === storiesToDelete.length;
+
+    if (areAllStoriesBeingDeleted) {
+      setStoriesToDelete([]);
+    } else {
+      setStoriesToDelete(stories.map((s) => s.id));
+    }
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <View style={headerStyles.container}>
+        <View style={headerStyles.selectAll}>
+          {isSelectingForDeletion && (
+            <SelectAll
+              count={storiesToDelete.length}
+              countLimit={statuses[contentIndex].stories.length}
+              onSelectAll={handleSelectAll}
+            />
+          )}
+        </View>
         <TouchableOpacity>
           <Text style={headerStyles.searchText}>SEARCH</Text>
         </TouchableOpacity>
@@ -242,9 +264,12 @@ const headerStyles = StyleSheet.create({
     backgroundColor: "#067C69",
     height: 60,
     width: "100%",
-    justifyContent: "center",
+    justifyContent: "space-between",
+    alignItems: "center",
+    flexDirection: "row",
     elevation: 14,
   },
+  selectAll: { marginLeft: 16 },
   searchText: {
     alignSelf: "flex-end",
     marginRight: 16,
