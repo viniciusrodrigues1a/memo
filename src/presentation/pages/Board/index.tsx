@@ -136,10 +136,6 @@ export default function Board() {
     setStoriesToDelete(filteredStories);
   }
 
-  useEffect(() => {
-    console.log("updated", storiesToDelete);
-  }, [storiesToDelete]);
-
   return (
     <View style={{ flex: 1 }}>
       <View style={headerStyles.container}>
