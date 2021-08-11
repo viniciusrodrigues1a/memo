@@ -19,6 +19,7 @@ import {
   StyleSheet,
   Dimensions,
   TouchableWithoutFeedback,
+  TouchableHighlight,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
@@ -34,6 +35,7 @@ import EmptyFlatList from "../../components/EmptyFlatList";
 import EmptyStoryImg from "../../assets/empty-story.png";
 import { Story } from "../../../entities";
 import { SelectAll } from "./SelectAll";
+import { SelectedItem } from "./SelectedItem";
 
 const windowWidth = Dimensions.get("window").width;
 const tabBarButtonWidth = Math.floor(windowWidth / 3);
@@ -235,11 +237,14 @@ export default function Board() {
                 keyExtractor={(i) => i.id}
                 data={status.stories}
                 renderItem={({ item: story }) => (
-                  <View>
+                  <View style={contentFlatListStyles.cardWrapper}>
                     {isSelectingForDeletion && (
-                      <Text>
-                        {String(storiesToDelete.indexOf(story.id) !== -1)}
-                      </Text>
+                      <View style={contentFlatListStyles.selectedItemWrapper}>
+                        <SelectedItem
+                          checked={storiesToDelete.indexOf(story.id) !== -1}
+                          theme="dark"
+                        />
+                      </View>
                     )}
                     <Card
                       story={story}
@@ -309,4 +314,9 @@ const contentFlatListStyles = StyleSheet.create({
   content: {
     width: windowWidth,
   },
+  cardWrapper: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  selectedItemWrapper: { paddingLeft: 16 },
 });

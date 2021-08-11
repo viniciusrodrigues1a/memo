@@ -1,7 +1,6 @@
 import React, { useMemo } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-
-const CheckImg = require("../../assets/check.png");
+import { SelectedItem } from "./SelectedItem";
 
 type SelectAllProps = {
   count: number;
@@ -22,14 +21,7 @@ export function SelectAll({ count, onSelectAll, countLimit }: SelectAllProps) {
   return (
     <TouchableOpacity style={styles.container} onPress={onSelectAll}>
       <View style={styles.boxWrapper}>
-        <View
-          style={[
-            styles.box,
-            { backgroundColor: hasSelectedAllItems ? "white" : "transparent" },
-          ]}
-        >
-          {hasSelectedAllItems && <Image source={CheckImg} />}
-        </View>
+        <SelectedItem checked={hasSelectedAllItems} theme="light" />
 
         <Text style={styles.text}>All</Text>
       </View>
@@ -44,15 +36,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   boxWrapper: {
-    alignItems: "center",
-  },
-  box: {
-    width: 20,
-    height: 20,
-    borderWidth: 1,
-    borderRadius: 4,
-    borderColor: "#dddddd",
-    justifyContent: "center",
     alignItems: "center",
   },
   text: {
