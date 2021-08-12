@@ -71,11 +71,11 @@ export default function Board() {
 
   useEffect(() => {
     (async () => {
-      const serviceResponse = await showBoardService.handle(route.params.id);
+      const serviceResponse = await showBoardService.handle(route.params.name);
 
       setStatuses(serviceResponse.board!.statuses);
     })();
-  }, [isFocused, route.params.id, showBoardService]);
+  }, [isFocused, route.params.name, showBoardService]);
 
   const onViewableItemsChanged = useCallback((items) => {
     if (items.viewableItems.length === 0) {

@@ -24,8 +24,8 @@ describe("Show a Board using AsyncStorage", () => {
       },
     ]);
 
-    const board = await sut.show("fce54dcf-795f-4253-b719-bfb131ee71d8");
+    const board = await sut.show("My board");
 
-    expect(board?.name).toBe("My board");
+    expect(board?.id).toBe("fce54dcf-795f-4253-b719-bfb131ee71d8");
   });
 });
