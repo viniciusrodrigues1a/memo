@@ -18,6 +18,7 @@ import {
   FlatList,
   StyleSheet,
   Dimensions,
+  BackHandler,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
@@ -51,6 +52,22 @@ export default function Board() {
 
   const contentFlatListRef = useRef(null);
   const tabBarFlatListRef = useRef(null);
+
+  useEffect(() => {
+    function handleBackEvent() {
+      if (isSelectingForDeletion) {
+        setIsSelectingForDeletion(false);
+        return true;
+      }
+
+      return false;
+    }
+
+    BackHandler.addEventListener("hardwareBackPress", handleBackEvent);
+
+    return () =>
+      BackHandler.removeEventListener("hardwareBackPress", handleBackEvent);
+  }, [isSelectingForDeletion]);
 
   useEffect(() => {
     (async () => {
