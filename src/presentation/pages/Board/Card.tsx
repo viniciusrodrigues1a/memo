@@ -27,7 +27,6 @@ export function Card({ story, onLongPress, onPress }: CardProps) {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#f9f9f9",
-    margin: 16,
     padding: 24,
     borderRadius: 4,
     elevation: 10,

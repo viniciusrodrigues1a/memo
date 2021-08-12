@@ -239,12 +239,15 @@ export default function Board() {
                 renderItem={({ item: story }) => (
                   <View style={contentFlatListStyles.cardWrapper}>
                     {isSelectingForDeletion && (
-                      <View style={contentFlatListStyles.selectedItemWrapper}>
+                      <TouchableOpacity
+                        onPress={() => handleCardPress(story)}
+                        style={contentFlatListStyles.selectedItemWrapper}
+                      >
                         <SelectedItem
                           checked={storiesToDelete.indexOf(story.id) !== -1}
                           theme="dark"
                         />
-                      </View>
+                      </TouchableOpacity>
                     )}
                     <Card
                       story={story}
@@ -315,8 +318,13 @@ const contentFlatListStyles = StyleSheet.create({
     width: windowWidth,
   },
   cardWrapper: {
+    padding: 16,
     flexDirection: "row",
     alignItems: "center",
   },
-  selectedItemWrapper: { paddingLeft: 16 },
+  selectedItemWrapper: {
+    paddingRight: 16,
+    height: "100%",
+    justifyContent: "center",
+  },
 });
