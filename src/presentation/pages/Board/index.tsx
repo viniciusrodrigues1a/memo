@@ -35,6 +35,7 @@ import EmptyStoryImg from "../../assets/empty-story.png";
 import { Story } from "../../../entities";
 import { SelectAll } from "./SelectAll";
 import { SelectedItem } from "./SelectedItem";
+import ErrorMessage from "../../components/ErrorMessage";
 
 const windowWidth = Dimensions.get("window").width;
 const tabBarButtonWidth = Math.floor(windowWidth / 3);
@@ -45,6 +46,7 @@ export default function Board() {
   const [statuses, setStatuses] = useState<Status[]>([]);
   const [isSelectingForDeletion, setIsSelectingForDeletion] = useState(false);
   const [storiesToDelete, setStoriesToDelete] = useState<Array<string>>([]);
+  const [requestError, setRequestError] = useState(false);
   const isFocused = useIsFocused();
 
   const route = useRoute<RouteProp<StackParamList, "Board">>();
@@ -71,9 +73,14 @@ export default function Board() {
 
   useEffect(() => {
     (async () => {
-      const serviceResponse = await showBoardService.handle(route.params.name);
+      const serviceResponse = await showBoardService.handle(
+        `${route.params.name}`
+      );
 
-      setStatuses(serviceResponse.board!.statuses);
+      setRequestError(serviceResponse.error);
+      if (serviceResponse.board) {
+        setStatuses(serviceResponse.board.statuses);
+      }
     })();
   }, [isFocused, route.params.name, showBoardService]);
 
@@ -183,101 +190,111 @@ export default function Board() {
         </TouchableOpacity>
       </View>
 
-      <View style={{ height: 58 }}>
-        <FlatList
-          ref={tabBarFlatListRef}
-          style={tabFlatListStyles.container}
-          showsHorizontalScrollIndicator={false}
-          horizontal
-          keyExtractor={(item) => item.name}
-          data={statuses}
-          renderItem={({ item, index }) => (
-            <>
-              <TouchableOpacity
-                onPress={() =>
-                  contentFlatListRef.current.scrollToOffset({
-                    offset: windowWidth * index,
-                  })
-                }
-                style={[
-                  tabFlatListStyles.tabButton,
-                  {
-                    borderBottomColor:
-                      index === contentIndex ? "#ffffff" : "#4A9C8F",
-                  },
-                ]}
-              >
-                <Text
-                  style={[
-                    tabFlatListStyles.tabButtonText,
-                    { color: index === contentIndex ? "#ffffff" : "#cccccc" },
-                  ]}
-                >
-                  {item.name.toUpperCase()}
-                </Text>
-              </TouchableOpacity>
+      {requestError ? (
+        <ErrorMessage onPress={() => {}} />
+      ) : (
+        <>
+          <View style={{ height: 58 }}>
+            <FlatList
+              ref={tabBarFlatListRef}
+              style={tabFlatListStyles.container}
+              showsHorizontalScrollIndicator={false}
+              horizontal
+              keyExtractor={(item) => item.name}
+              data={statuses}
+              renderItem={({ item, index }) => (
+                <>
+                  <TouchableOpacity
+                    onPress={() =>
+                      contentFlatListRef.current.scrollToOffset({
+                        offset: windowWidth * index,
+                      })
+                    }
+                    style={[
+                      tabFlatListStyles.tabButton,
+                      {
+                        borderBottomColor:
+                          index === contentIndex ? "#ffffff" : "#4A9C8F",
+                      },
+                    ]}
+                  >
+                    <Text
+                      style={[
+                        tabFlatListStyles.tabButtonText,
+                        {
+                          color: index === contentIndex ? "#ffffff" : "#cccccc",
+                        },
+                      ]}
+                    >
+                      {item.name.toUpperCase()}
+                    </Text>
+                  </TouchableOpacity>
 
-              {index === 4 && (
-                <TouchableOpacity style={tabFlatListStyles.buttonAddTab}>
-                  <Feather name="plus" color="#1F8978" size={28} />
-                </TouchableOpacity>
+                  {index === 4 && (
+                    <TouchableOpacity style={tabFlatListStyles.buttonAddTab}>
+                      <Feather name="plus" color="#1F8978" size={28} />
+                    </TouchableOpacity>
+                  )}
+                </>
               )}
-            </>
-          )}
-        />
-      </View>
-
-      <FlatList
-        ref={contentFlatListRef}
-        style={contentFlatListStyles.container}
-        decelerationRate="fast"
-        snapToInterval={windowWidth}
-        showsHorizontalScrollIndicator={false}
-        viewabilityConfigCallbackPairs={viewabilityConfigCallbackPairs.current}
-        horizontal
-        keyExtractor={(_, index) => index.toString()}
-        data={statuses}
-        renderItem={({ item: status }) => (
-          <View style={contentFlatListStyles.content}>
-            {status.stories.length === 0 ? (
-              <EmptyFlatList
-                buttonOnPress={goToStoryCreationPage}
-                buttonText="Create a story"
-                text="No story was found"
-                imageSource={EmptyStoryImg}
-              />
-            ) : (
-              <FlatList
-                showsVerticalScrollIndicator={false}
-                keyExtractor={(i) => i.id}
-                data={status.stories}
-                renderItem={({ item: story }) => (
-                  <View style={contentFlatListStyles.cardWrapper}>
-                    {isSelectingForDeletion && (
-                      <TouchableOpacity
-                        onPress={() => handleCardPress(story)}
-                        style={contentFlatListStyles.selectedItemWrapper}
-                      >
-                        <SelectedItem
-                          checked={storiesToDelete.indexOf(story.id) !== -1}
-                          theme="dark"
-                        />
-                      </TouchableOpacity>
-                    )}
-                    <Card
-                      story={story}
-                      onPress={() => handleCardPress(story)}
-                      onLongPress={() => handleCardLongPress(story)}
-                    />
-                  </View>
-                )}
-              />
-            )}
+            />
           </View>
-        )}
-      />
 
-      <AddButton onPress={goToStoryCreationPage} />
+          <FlatList
+            ref={contentFlatListRef}
+            style={contentFlatListStyles.container}
+            decelerationRate="fast"
+            snapToInterval={windowWidth}
+            showsHorizontalScrollIndicator={false}
+            viewabilityConfigCallbackPairs={
+              viewabilityConfigCallbackPairs.current
+            }
+            horizontal
+            keyExtractor={(_, index) => index.toString()}
+            data={statuses}
+            renderItem={({ item: status }) => (
+              <View style={contentFlatListStyles.content}>
+                {status.stories.length === 0 ? (
+                  <EmptyFlatList
+                    buttonOnPress={goToStoryCreationPage}
+                    buttonText="Create a story"
+                    text="No story was found"
+                    imageSource={EmptyStoryImg}
+                  />
+                ) : (
+                  <FlatList
+                    showsVerticalScrollIndicator={false}
+                    keyExtractor={(i) => i.id}
+                    data={status.stories}
+                    renderItem={({ item: story }) => (
+                      <View style={contentFlatListStyles.cardWrapper}>
+                        {isSelectingForDeletion && (
+                          <TouchableOpacity
+                            onPress={() => handleCardPress(story)}
+                            style={contentFlatListStyles.selectedItemWrapper}
+                          >
+                            <SelectedItem
+                              checked={storiesToDelete.indexOf(story.id) !== -1}
+                              theme="dark"
+                            />
+                          </TouchableOpacity>
+                        )}
+                        <Card
+                          story={story}
+                          onPress={() => handleCardPress(story)}
+                          onLongPress={() => handleCardLongPress(story)}
+                        />
+                      </View>
+                    )}
+                  />
+                )}
+              </View>
+            )}
+          />
+
+          <AddButton onPress={goToStoryCreationPage} />
+        </>
+      )}
     </View>
   );
 }
