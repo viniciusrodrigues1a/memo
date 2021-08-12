@@ -1,16 +1,24 @@
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
-type NoBoardFoundProps = {
+type ErrorMessageProps = {
   onPress: () => void;
+  description?: string;
 };
 
-export default function NoBoardFound({ onPress }: NoBoardFoundProps) {
+ErrorMessage.defaultProps = {
+  description: "Something went wrong",
+};
+
+export default function ErrorMessage({
+  onPress,
+  description,
+}: ErrorMessageProps) {
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       <Text style={styles.title}>An error occurred</Text>
 
-      <Text style={styles.description}>We couldn&apos;t find your boards</Text>
+      <Text style={styles.description}>{description}</Text>
 
       <Text style={styles.fakeButtonText}>Try again</Text>
     </TouchableOpacity>

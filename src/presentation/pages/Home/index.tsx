@@ -21,7 +21,7 @@ import { Board } from "../../../entities";
 import { createBoardUseCase } from "../../factories";
 
 import EmptyFlatList from "../../components/EmptyFlatList";
-import NoBoardFound from "./NoBoardFound";
+import ErrorMessage from "../../components/ErrorMessage";
 
 import AddButton from "../../components/AddButton";
 import { ServicesContext } from "../../contexts";
@@ -159,7 +159,10 @@ export default function Home() {
           <ActivityIndicator color="#222222" size="large" />
         </View>
       ) : requestError ? (
-        <NoBoardFound onPress={async () => fetchBoards()} />
+        <ErrorMessage
+          description="We couldn't find your boards"
+          onPress={async () => fetchBoards()}
+        />
       ) : filteredBoards.length === 0 ? (
         <EmptyFlatList
           buttonOnPress={openModal}
