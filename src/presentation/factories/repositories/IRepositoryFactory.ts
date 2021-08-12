@@ -6,7 +6,7 @@ import {
   IShowStatusRepository,
   IShowStoryRepository,
   IUpdateStoryRepository,
-} from "../../../use-cases/interfaces";
+} from "../../../use-cases/repositories";
 
 export interface IRepositoryFactory {
   makeCreateBoardRepository(): ICreateBoardRepository;
