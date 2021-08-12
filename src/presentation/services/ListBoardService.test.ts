@@ -1,10 +1,10 @@
 import { mock } from "jest-mock-extended";
 import { Board } from "../../entities";
-import { IListBoardUseCase } from "../../use-cases";
+import { ListBoardUseCase } from "../../use-cases";
 import { ListBoardService } from "./ListBoardService";
 
 function makeSut() {
-  const listBoardUseCaseMock = mock<IListBoardUseCase>();
+  const listBoardUseCaseMock = mock<ListBoardUseCase>();
   const sut = new ListBoardService(listBoardUseCaseMock);
 
   return { sut, listBoardUseCaseMock };

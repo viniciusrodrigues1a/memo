@@ -1,5 +1,5 @@
 import { Board } from "../../entities";
-import { IListBoardUseCase } from "../../use-cases";
+import { ListBoardUseCase } from "../../use-cases";
 import { NoBoardFoundError } from "../../use-cases/errors";
 import { BaseResponse } from "./type-defs";
 
@@ -8,7 +8,7 @@ type Response = BaseResponse & {
 };
 
 export class ListBoardService {
-  constructor(private listBoardUseCase: IListBoardUseCase) {}
+  constructor(private listBoardUseCase: ListBoardUseCase) {}
 
   async list(): Promise<Response> {
     try {

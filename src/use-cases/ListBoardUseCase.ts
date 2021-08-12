@@ -1,9 +1,8 @@
 import { Board } from "../entities";
 import { IListBoardRepository } from "./repositories";
 import { NoBoardFoundError } from "./errors";
-import { IListBoardUseCase } from "./IListBoardUseCase";
 
-export class ListBoardUseCase implements IListBoardUseCase {
+export class ListBoardUseCase {
   constructor(private listBoardRepository: IListBoardRepository) {}
 
   async list(): Promise<Board[]> {
