@@ -18,8 +18,6 @@ import {
   FlatList,
   StyleSheet,
   Dimensions,
-  TouchableWithoutFeedback,
-  TouchableHighlight,
 } from "react-native";
 import { Feather } from "@expo/vector-icons";
 
