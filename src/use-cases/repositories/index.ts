@@ -5,3 +5,4 @@ export * from "./ICreateStoryRepository";
 export * from "./IShowStatusRepository";
 export * from "./IShowStoryRepository";
 export * from "./IUpdateStoryRepository";
+export * from "./IRemoveStoryRepository";
