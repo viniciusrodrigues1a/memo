@@ -41,7 +41,7 @@ const windowWidth = Dimensions.get("window").width;
 const tabBarButtonWidth = Math.floor(windowWidth / 3);
 
 export default function Board() {
-  const { showBoardService } = useContext(ServicesContext);
+  const { showBoardService, removeStoryService } = useContext(ServicesContext);
   const [contentIndex, setContentIndex] = useState(0);
   const [statuses, setStatuses] = useState<Status[]>([]);
   const [isSelectingForDeletion, setIsSelectingForDeletion] = useState(false);
@@ -71,18 +71,20 @@ export default function Board() {
       BackHandler.removeEventListener("hardwareBackPress", handleBackEvent);
   }, [isSelectingForDeletion]);
 
-  useEffect(() => {
-    (async () => {
-      const serviceResponse = await showBoardService.handle(
-        `${route.params.name}`
-      );
+  const fetchStatuses = useCallback(async () => {
+    const serviceResponse = await showBoardService.handle(
+      `${route.params.name}`
+    );
 
-      setRequestError(serviceResponse.error);
-      if (serviceResponse.board) {
-        setStatuses(serviceResponse.board.statuses);
-      }
-    })();
-  }, [isFocused, route.params.name, showBoardService]);
+    setRequestError(serviceResponse.error);
+    if (serviceResponse.board) {
+      setStatuses(serviceResponse.board.statuses);
+    }
+  }, [route.params.name, showBoardService]);
+
+  useEffect(() => {
+    fetchStatuses();
+  }, [fetchStatuses, isFocused]);
 
   const onViewableItemsChanged = useCallback((items) => {
     if (items.viewableItems.length === 0) {
@@ -173,6 +175,14 @@ export default function Board() {
     }
   }
 
+  function handleHeaderButton() {
+    if (isSelectingForDeletion) {
+      storiesToDelete.forEach((storyId) => removeStoryService.handle(storyId));
+      setIsSelectingForDeletion(false);
+      fetchStatuses();
+    }
+  }
+
   return (
     <View style={{ flex: 1 }}>
       <View style={headerStyles.container}>
@@ -185,8 +195,10 @@ export default function Board() {
             />
           )}
         </View>
-        <TouchableOpacity>
-          <Text style={headerStyles.searchText}>SEARCH</Text>
+        <TouchableOpacity onPress={handleHeaderButton}>
+          <Text style={headerStyles.searchText}>
+            {isSelectingForDeletion ? "DELETE" : "SEARCH"}
+          </Text>
         </TouchableOpacity>
       </View>
 
