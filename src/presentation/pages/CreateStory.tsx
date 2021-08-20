@@ -32,6 +32,7 @@ export default function CreateStory() {
   const [description, setDescription] = useState("");
   const titleInputRef = useRef<TextInput>(null);
   const descriptionInputRef = useRef<TextInput>(null);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(false);
   const navigation = useNavigation();
   const isFocused = useIsFocused();
   const route = useRoute<RouteProp<StackParamList, "CreateStory">>();
@@ -51,6 +52,7 @@ export default function CreateStory() {
   }, [isFocused, focusInput]);
 
   async function createStory() {
+    setIsButtonDisabled(true);
     if (!description || !title) {
       return;
     }
@@ -63,6 +65,7 @@ export default function CreateStory() {
 
     if (response.error) {
       showError(response.errorMessage!);
+      setIsButtonDisabled(false);
       return;
     }
 
@@ -76,9 +79,11 @@ export default function CreateStory() {
           <Text style={styles.cancelText}>Cancel</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity disabled={description === ""}>
+        <TouchableOpacity
+          disabled={!description || !title || isButtonDisabled}
+          onPress={createStory}
+        >
           <Text
-            onPress={createStory}
             style={[
               styles.okText,
               { color: !description || !title ? "#bbbbbb" : "#067C69" },
