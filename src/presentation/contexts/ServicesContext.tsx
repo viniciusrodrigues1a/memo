@@ -5,6 +5,7 @@ import {
   CreateBoardService,
   CreateStoryService,
   ListBoardService,
+  RemoveStoryService,
   ShowBoardService,
   UpdateStoryService,
 } from "../services";
@@ -15,6 +16,7 @@ type ServicesContextData = {
   showBoardService: ShowBoardService;
   createStoryService: CreateStoryService;
   updateStoryService: UpdateStoryService;
+  removeStoryService: RemoveStoryService;
 };
 
 type ServicesProviderProps = {
@@ -38,6 +40,7 @@ export const ServicesProvider = ({
       showBoardService: serviceFactoryImpl.makeShowBoardService(),
       createStoryService: serviceFactoryImpl.makeCreateStoryService(),
       updateStoryService: serviceFactoryImpl.makeUpdateStoryService(),
+      removeStoryService: serviceFactoryImpl.makeRemoveStoryService(),
     };
   }, []);
 
