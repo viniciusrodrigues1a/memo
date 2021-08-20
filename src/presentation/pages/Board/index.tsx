@@ -177,10 +177,16 @@ export default function Board() {
 
   function handleHeaderButton() {
     if (isSelectingForDeletion) {
-      storiesToDelete.forEach((storyId) => removeStoryService.handle(storyId));
-      setIsSelectingForDeletion(false);
-      fetchStatuses();
+      removeStories();
     }
+  }
+
+  async function removeStories() {
+    for (let i = 0; i < storiesToDelete.length; i++) {
+      await removeStoryService.handle(storiesToDelete[i]);
+    }
+    setIsSelectingForDeletion(false);
+    await fetchStatuses();
   }
 
   return (
