@@ -5,3 +5,4 @@ export * from "./AsyncStorageCreateStoryRepository";
 export * from "./AsyncStorageShowStatusRepository";
 export * from "./AsyncStorageShowStoryRepository";
 export * from "./AsyncStorageUpdateStoryRepository";
+export * from "./AsyncStorageRemoveStoryRepository";
