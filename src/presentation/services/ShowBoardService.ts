@@ -1,5 +1,6 @@
 import { Board } from "../../entities";
 import { ShowBoardUseCase } from "../../use-cases";
+import { NoBoardFoundError } from "../../use-cases/errors";
 import { BaseResponse } from "./type-defs";
 
 type ShowBoardServiceResponse = BaseResponse & {
@@ -15,7 +16,11 @@ export class ShowBoardService {
 
       return { error: false, errorMessage: null, board };
     } catch (err) {
-      return { error: true, errorMessage: err.message };
+      if (err instanceof NoBoardFoundError) {
+        return { error: true, errorMessage: err.message };
+      }
+
+      return { error: true, errorMessage: "Story couldn't be loaded" };
     }
   }
 }

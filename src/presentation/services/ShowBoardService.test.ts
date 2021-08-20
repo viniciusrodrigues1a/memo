@@ -32,10 +32,10 @@ describe("Service for showing a Board", () => {
 
     const response = await sut.handle("board-id-0");
 
-    expect(response.error).toBe(true);
+    expect(response.errorMessage).toBe(new NoBoardFoundError().message);
   });
 
-  it("should return an error if a generic error was thrown", async () => {
+  it("should return a generic error message", async () => {
     const { sut, showBoardUseCaseMock } = makeSut();
 
     showBoardUseCaseMock.show.mockImplementationOnce(() => {
@@ -44,6 +44,6 @@ describe("Service for showing a Board", () => {
 
     const response = await sut.handle("board-id-0");
 
-    expect(response.error).toBe(true);
+    expect(response.errorMessage).toBe("Story couldn't be loaded");
   });
 });
