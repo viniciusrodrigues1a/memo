@@ -2,6 +2,7 @@ import {
   AsyncStorageCreateBoardRepository,
   AsyncStorageCreateStoryRepository,
   AsyncStorageListBoardRepository,
+  AsyncStorageRemoveStoryRepository,
   AsyncStorageShowBoardRepository,
   AsyncStorageShowStatusRepository,
   AsyncStorageShowStoryRepository,
@@ -15,10 +16,15 @@ import {
   IUpdateStoryRepository,
   IShowStoryRepository,
   IShowStatusRepository,
+  IRemoveStoryRepository,
 } from "../../../use-cases/repositories";
 import { IRepositoryFactory } from "./IRepositoryFactory";
 
 export class AsyncStorageRepositoryFactoryImpl implements IRepositoryFactory {
+  makeRemoveStoryRepository(): IRemoveStoryRepository {
+    return new AsyncStorageRemoveStoryRepository();
+  }
+
   makeCreateBoardRepository(): ICreateBoardRepository {
     return new AsyncStorageCreateBoardRepository();
   }

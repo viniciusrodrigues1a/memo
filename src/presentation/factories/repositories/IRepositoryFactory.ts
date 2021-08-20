@@ -2,6 +2,7 @@ import {
   ICreateBoardRepository,
   ICreateStoryRepository,
   IListBoardRepository,
+  IRemoveStoryRepository,
   IShowBoardRepository,
   IShowStatusRepository,
   IShowStoryRepository,
@@ -15,5 +16,6 @@ export interface IRepositoryFactory {
   makeCreateStoryRepository(): ICreateStoryRepository;
   makeUpdateStoryRepository(): IUpdateStoryRepository;
   makeShowStoryRepository(): IShowStoryRepository;
+  makeRemoveStoryRepository(): IRemoveStoryRepository;
   makeShowStatusRepository(): IShowStatusRepository;
 }

@@ -2,6 +2,7 @@ import {
   CreateBoardUseCase,
   CreateStoryUseCase,
   ListBoardUseCase,
+  RemoveStoryUseCase,
   ShowBoardUseCase,
   UpdateStoryUseCase,
 } from "../../../use-cases";
@@ -9,6 +10,7 @@ import {
   CreateBoardService,
   CreateStoryService,
   ListBoardService,
+  RemoveStoryService,
   ShowBoardService,
   UpdateStoryService,
 } from "../../services";
@@ -17,6 +19,20 @@ import { IServiceFactory } from "./IServiceFactory";
 
 export class AsyncStorageServiceFactoryImpl implements IServiceFactory {
   constructor(private repositoryFactory: IRepositoryFactory) {}
+
+  makeRemoveStoryService(): RemoveStoryService {
+    const showStoryRepository =
+      this.repositoryFactory.makeShowStoryRepository();
+    const removeStoryRepository =
+      this.repositoryFactory.makeRemoveStoryRepository();
+    const useCase = new RemoveStoryUseCase(
+      showStoryRepository,
+      removeStoryRepository
+    );
+    const service = new RemoveStoryService(useCase);
+
+    return service;
+  }
 
   makeUpdateStoryService(): UpdateStoryService {
     const updateStoryRepository =
