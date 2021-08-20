@@ -368,7 +368,7 @@ const contentFlatListStyles = StyleSheet.create({
   },
   selectedItemWrapper: {
     paddingRight: 16,
-    height: "100%",
+    height: 180,
     justifyContent: "center",
   },
 });
