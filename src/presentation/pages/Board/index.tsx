@@ -278,8 +278,17 @@ export default function Board() {
                     showsVerticalScrollIndicator={false}
                     keyExtractor={(i) => i.id}
                     data={status.stories}
-                    renderItem={({ item: story }) => (
-                      <View style={contentFlatListStyles.cardWrapper}>
+                    renderItem={({ item: story, index }) => (
+                      <View
+                        style={[
+                          contentFlatListStyles.cardWrapper,
+                          {
+                            paddingTop: index === 0 ? 32 : 16,
+                            paddingBottom:
+                              index === status.stories.length - 1 ? 32 : 16,
+                          },
+                        ]}
+                      >
                         {isSelectingForDeletion && (
                           <TouchableOpacity
                             onPress={() => handleCardPress(story)}
