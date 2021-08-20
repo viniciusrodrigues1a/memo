@@ -86,6 +86,12 @@ export default function Board() {
     fetchStatuses();
   }, [fetchStatuses, isFocused]);
 
+  useEffect(() => {
+    if (isSelectingForDeletion === false) {
+      setStoriesToDelete([]);
+    }
+  }, [isSelectingForDeletion]);
+
   const onViewableItemsChanged = useCallback((items) => {
     if (items.viewableItems.length === 0) {
       return;
